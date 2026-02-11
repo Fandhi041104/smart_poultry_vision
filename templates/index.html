@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broiler Monitoring System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-heartbeat"></i>
+                <span>Broiler Monitor</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/riwayat">Riwayat</a></li>
+                <li><a href="/edukasi">Edukasi</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Sistem Monitoring Kesehatan Ayam Broiler</h1>
+                <p>Deteksi penyakit ayam broiler secara real-time menggunakan teknologi AI dan Computer Vision</p>
+                <div class="hero-buttons">
+                    <a href="/dashboard" class="btn btn-primary">
+                        <i class="fas fa-play"></i> Mulai Monitoring
+                    </a>
+                    <a href="/edukasi" class="btn btn-secondary">
+                        <i class="fas fa-book"></i> Pelajari Lebih Lanjut
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>Fitur Unggulan</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>Live Streaming</h3>
+                    <p>Monitor kondisi ayam secara real-time melalui kamera IP dengan koneksi RTSP</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI Detection</h3>
+                    <p>Deteksi otomatis penyakit menggunakan YOLOv8 dengan akurasi tinggi</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Analisis Data</h3>
+                    <p>Statistik dan riwayat deteksi penyakit yang komprehensif</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Notifikasi</h3>
+                    <p>Peringatan otomatis saat terdeteksi penyakit pada ayam</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Disease Info Section -->
+    <section class="disease-info">
+        <div class="container">
+            <h2>Penyakit yang Dapat Dideteksi</h2>
+            <div class="disease-grid">
+                <div class="disease-card">
+                    <div class="disease-icon healthy">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Sehat</h3>
+                    <p>Feses normal, tidak ada indikasi penyakit</p>
+                </div>
+                <div class="disease-card">
+                    <div class="disease-icon warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>Coccidiosis</h3>
+                    <p>Penyakit parasit pada usus ayam</p>
+                </div>
+                <div class="disease-card">
+                    <div class="disease-icon danger">
+                        <i class="fas fa-virus"></i>
+                    </div>
+                    <h3>Newcastle Disease</h3>
+                    <p>Penyakit virus yang menyerang sistem pernapasan</p>
+                </div>
+                <div class="disease-card">
+                    <div class="disease-icon danger">
+                        <i class="fas fa-bacteria"></i>
+                    </div>
+                    <h3>Salmonella</h3>
+                    <p>Infeksi bakteri pada saluran pencernaan</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Broiler Monitoring System. Tugas Akhir - Sistem Monitoring Kesehatan Ayam Broiler</p>
+        </div>
+    </footer>
+</body>
+</html>

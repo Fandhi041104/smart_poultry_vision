@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Broiler Monitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-heartbeat"></i>
+                <span>Broiler Monitor</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard" class="active">Dashboard</a></li>
+                <li><a href="/riwayat">Riwayat</a></li>
+                <li><a href="/edukasi">Edukasi</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <div class="container">
+            <h1 class="page-title">
+                <i class="fas fa-tachometer-alt"></i> Dashboard Monitoring
+            </h1>
+
+            <!-- Status Cards -->
+            <div class="status-cards">
+                <div class="status-card">
+                    <div class="status-icon camera">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="status-info">
+                        <h3>Status Kamera</h3>
+                        <p id="camera-status">Checking...</p>
+                    </div>
+                </div>
+                <div class="status-card">
+                    <div class="status-icon detection">
+                        <i class="fas fa-radar"></i>
+                    </div>
+                    <div class="status-info">
+                        <h3>Deteksi Terbaru</h3>
+                        <p id="latest-disease">-</p>
+                    </div>
+                </div>
+                <div class="status-card">
+                    <div class="status-icon confidence">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="status-info">
+                        <h3>Confidence</h3>
+                        <p id="confidence-level">0%</p>
+                    </div>
+                </div>
+                <div class="status-card">
+                    <div class="status-icon time">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="status-info">
+                        <h3>Last Update</h3>
+                        <p id="last-update">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="dashboard-grid">
+                <!-- Live Stream -->
+                <div class="dashboard-card live-stream">
+                    <div class="card-header">
+                        <h2><i class="fas fa-video"></i> Live Stream</h2>
+                        <div class="stream-controls">
+                            <button class="btn-icon" onclick="refreshStream()">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                            <button class="btn-icon" onclick="toggleFullscreen()">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="stream-container">
+                        <img id="video-stream" src="{{ url_for('video_feed') }}" alt="Live Stream">
+                        <div class="stream-overlay">
+                            <span class="live-badge">
+                                <i class="fas fa-circle"></i> LIVE
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-pie"></i> Statistik Deteksi</h2>
+                    </div>
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <div class="stat-label">Total Deteksi</div>
+                            <div class="stat-value" id="total-detections">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Sehat</div>
+                            <div class="stat-value healthy" id="healthy-count">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Coccidiosis</div>
+                            <div class="stat-value warning" id="coccidiosis-count">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Newcastle</div>
+                            <div class="stat-value danger" id="newcastle-count">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Salmonella</div>
+                            <div class="stat-value danger" id="salmonella-count">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Detections -->
+                <div class="dashboard-card recent-detections">
+                    <div class="card-header">
+                        <h2><i class="fas fa-history"></i> Deteksi Terbaru</h2>
+                        <a href="/riwayat" class="btn-link">Lihat Semua</a>
+                    </div>
+                    <div class="detections-list" id="recent-list">
+                        <p class="no-data">Belum ada deteksi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Update data setiap 2 detik
+        setInterval(updateDashboard, 2000);
+        updateDashboard();
+
+        function updateDashboard() {
+            // Update camera status
+            fetch('/api/camera_status')
+                .then(res => res.json())
+                .then(data => {
+                    const statusEl = document.getElementById('camera-status');
+                    if (data.status === 'online') {
+                        statusEl.textContent = 'Online';
+                        statusEl.style.color = '#4ade80';
+                    } else {
+                        statusEl.textContent = 'Offline';
+                        statusEl.style.color = '#f87171';
+                    }
+                });
+
+            // Update latest detection
+            fetch('/api/latest_detection')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('latest-disease').textContent = data.status;
+                    document.getElementById('confidence-level').textContent = data.confidence + '%';
+                    document.getElementById('last-update').textContent = data.timestamp;
+                });
+
+            // Update statistics
+            fetch('/api/statistics')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('total-detections').textContent = data.total;
+                    document.getElementById('healthy-count').textContent = data.by_disease['Sehat'] || 0;
+                    document.getElementById('coccidiosis-count').textContent = data.by_disease['Coccidiosis'] || 0;
+                    document.getElementById('newcastle-count').textContent = data.by_disease['Newcastle'] || 0;
+                    document.getElementById('salmonella-count').textContent = data.by_disease['Salmonella'] || 0;
+
+                    // Update recent detections
+                    const recentList = document.getElementById('recent-list');
+                    if (data.recent.length > 0) {
+                        recentList.innerHTML = data.recent.map(item => `
+                            <div class="detection-item ${item.disease.toLowerCase()}">
+                                <div class="detection-disease">${item.disease}</div>
+                                <div class="detection-confidence">${item.confidence}%</div>
+                                <div class="detection-time">${item.timestamp}</div>
+                            </div>
+                        `).join('');
+                    }
+                });
+        }
+
+        function refreshStream() {
+            const img = document.getElementById('video-stream');
+            img.src = img.src.split('?')[0] + '?t=' + new Date().getTime();
+        }
+
+        function toggleFullscreen() {
+            const streamContainer = document.querySelector('.stream-container');
+            if (!document.fullscreenElement) {
+                streamContainer.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+    </script>
+</body>
+</html>

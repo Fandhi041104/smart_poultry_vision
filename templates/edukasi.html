@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edukasi - Broiler Monitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-heartbeat"></i>
+                <span>Broiler Monitor</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/riwayat">Riwayat</a></li>
+                <li><a href="/edukasi" class="active">Edukasi</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Education Content -->
+    <div class="education-container">
+        <div class="container">
+            <h1 class="page-title">
+                <i class="fas fa-book"></i> Edukasi Penyakit Ayam Broiler
+            </h1>
+
+            <!-- Disease Cards -->
+            <div class="education-grid">
+                <!-- Sehat -->
+                <div class="edu-card">
+                    <div class="edu-header healthy">
+                        <i class="fas fa-check-circle"></i>
+                        <h2>Kondisi Sehat</h2>
+                    </div>
+                    <div class="edu-content">
+                        <h3>Ciri-ciri Feses Sehat:</h3>
+                        <ul>
+                            <li>Warna coklat kehijauan normal</li>
+                            <li>Konsistensi padat namun tidak keras</li>
+                            <li>Tidak berbau menyengat</li>
+                            <li>Bentuk teratur dan kompak</li>
+                        </ul>
+                        
+                        <h3>Tips Menjaga Kesehatan:</h3>
+                        <ul>
+                            <li>Berikan pakan berkualitas tinggi</li>
+                            <li>Pastikan air minum selalu bersih</li>
+                            <li>Jaga kebersihan kandang</li>
+                            <li>Lakukan vaksinasi rutin</li>
+                            <li>Monitor suhu dan ventilasi kandang</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Coccidiosis -->
+                <div class="edu-card">
+                    <div class="edu-header warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h2>Coccidiosis</h2>
+                    </div>
+                    <div class="edu-content">
+                        <h3>Penyebab:</h3>
+                        <p>Parasit Coccidia yang menyerang usus ayam, berkembang di lingkungan lembab dan kotor.</p>
+                        
+                        <h3>Gejala:</h3>
+                        <ul>
+                            <li>Feses berdarah atau bercampur darah</li>
+                            <li>Diare dengan warna kemerahan</li>
+                            <li>Ayam lesu dan nafsu makan menurun</li>
+                            <li>Bulu kusam dan berdiri</li>
+                            <li>Pertumbuhan terhambat</li>
+                        </ul>
+                        
+                        <h3>Pengobatan:</h3>
+                        <ul>
+                            <li>Berikan obat antikokcidiosis (sulfa drugs)</li>
+                            <li>Isolasi ayam yang sakit</li>
+                            <li>Tingkatkan sanitasi kandang</li>
+                            <li>Berikan vitamin dan elektrolit</li>
+                        </ul>
+                        
+                        <h3>Pencegahan:</h3>
+                        <ul>
+                            <li>Vaksinasi sejak DOC (Day Old Chick)</li>
+                            <li>Jaga kebersihan kandang dan alas</li>
+                            <li>Hindari kepadatan kandang berlebih</li>
+                            <li>Gunakan kokcidiostat dalam pakan</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Newcastle Disease -->
+                <div class="edu-card">
+                    <div class="edu-header danger">
+                        <i class="fas fa-virus"></i>
+                        <h2>Newcastle Disease (ND)</h2>
+                    </div>
+                    <div class="edu-content">
+                        <h3>Penyebab:</h3>
+                        <p>Virus Newcastle Disease (NDV) yang sangat menular dan dapat menyebabkan kematian massal.</p>
+                        
+                        <h3>Gejala:</h3>
+                        <ul>
+                            <li>Feses berwarna hijau keputihan (diare)</li>
+                            <li>Gangguan pernapasan (ngorok, batuk)</li>
+                            <li>Tortikolis (leher bengkok/memutar)</li>
+                            <li>Kejang-kejang dan kelumpuhan</li>
+                            <li>Penurunan produksi telur drastis</li>
+                        </ul>
+                        
+                        <h3>Pengobatan:</h3>
+                        <p><strong>Tidak ada pengobatan spesifik!</strong> Fokus pada pencegahan dan perawatan suportif:</p>
+                        <ul>
+                            <li>Isolasi ayam yang terinfeksi</li>
+                            <li>Berikan vitamin dan elektrolit</li>
+                            <li>Antibiotik untuk mencegah infeksi sekunder</li>
+                            <li>Culling (pemusnahan) ayam yang parah</li>
+                        </ul>
+                        
+                        <h3>Pencegahan:</h3>
+                        <ul>
+                            <li><strong>VAKSINASI WAJIB!</strong> (umur 4 hari, 18-21 hari, booster rutin)</li>
+                            <li>Biosecurity ketat (desinfeksi, karantina)</li>
+                            <li>Hindari kontak dengan unggas liar</li>
+                            <li>Laporkan ke Dinas Peternakan jika ada wabah</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Salmonella -->
+                <div class="edu-card">
+                    <div class="edu-header danger">
+                        <i class="fas fa-bacteria"></i>
+                        <h2>Salmonellosis</h2>
+                    </div>
+                    <div class="edu-content">
+                        <h3>Penyebab:</h3>
+                        <p>Bakteri Salmonella (S. pullorum, S. typhimurium) yang menginfeksi saluran pencernaan.</p>
+                        
+                        <h3>Gejala:</h3>
+                        <ul>
+                            <li>Feses putih seperti kapur (pada pullorum)</li>
+                            <li>Diare kuning kehijauan berbau busuk</li>
+                            <li>Ayam tampak mengantuk dan menggigil</li>
+                            <li>Sayap terkulai</li>
+                            <li>Kematian mendadak pada anak ayam</li>
+                        </ul>
+                        
+                        <h3>Pengobatan:</h3>
+                        <ul>
+                            <li>Antibiotik spektrum luas (sesuai hasil lab)</li>
+                            <li>Enrofloxacin, Neomycin, atau Furazolidone</li>
+                            <li>Probiotik untuk memperbaiki flora usus</li>
+                            <li>Elektrolit dan vitamin</li>
+                        </ul>
+                        
+                        <h3>Pencegahan:</h3>
+                        <ul>
+                            <li>Beli DOC dari sumber terpercaya (NPIP certified)</li>
+                            <li>Sanitasi dan desinfeksi kandang rutin</li>
+                            <li>Kontrol lalat dan hama pembawa bakteri</li>
+                            <li>Jangan campur ayam berbeda umur</li>
+                            <li>Perhatikan kebersihan pakan dan air minum</li>
+                        </ul>
+                        
+                        <div class="alert-box">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <strong>Perhatian:</strong> Salmonella dapat menular ke manusia (zoonosis). Selalu cuci tangan setelah menangani ayam!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="faq-section">
+                <h2><i class="fas fa-question-circle"></i> Pertanyaan Umum (FAQ)</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-chevron-right"></i>
+                        Berapa akurasi sistem deteksi?
+                    </div>
+                    <div class="faq-answer">
+                        Sistem menggunakan YOLOv8 dengan akurasi rata-rata 85-95% tergantung kualitas dataset training dan kondisi pencahayaan kamera.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-chevron-right"></i>
+                        Kapan harus memanggil dokter hewan?
+                    </div>
+                    <div class="faq-answer">
+                        Segera hubungi dokter hewan jika: (1) Kematian lebih dari 5% dalam sehari, (2) Gejala ND (leher bengkok, kejang), (3) Wabah penyakit tidak terkontrol dengan pengobatan dasar.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-chevron-right"></i>
+                        Bagaimana cara membersihkan kandang yang benar?
+                    </div>
+                    <div class="faq-answer">
+                        1) Buang semua kotoran dan alas, 2) Sikat dan semprot dengan air, 3) Aplikasikan desinfektan (formalin 2%, iodine), 4) Keringkan minimal 3 hari, 5) Fumigasi sebelum ayam masuk.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle FAQ
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', function() {
+                this.parentElement.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
