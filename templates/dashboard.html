@@ -4,417 +4,184 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Broiler Monitor</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .dual-view-container {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .view-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .view-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .view-header h3 {
-            margin: 0;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .view-body {
-            position: relative;
-            background: #000;
-            aspect-ratio: 4/3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .view-body img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .live-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(239, 68, 68, 0.9);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            z-index: 10;
-        }
-
-        .live-badge i {
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .btn-icon {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .btn-icon:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.05);
-        }
-
-        /* Snapshot Grid 3x2 */
-        .snapshots-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            padding: 15px;
-            max-height: 600px;
-            overflow-y: auto;
-        }
-
-        .snapshot-item {
-            position: relative;
-            background: #f8f9fa;
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-            aspect-ratio: 4/3;
-        }
-
-        .snapshot-item:hover {
-            border-color: #667eea;
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
-
-        .snapshot-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .snapshot-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            color: white;
-            padding: 8px;
-            font-size: 10px;
-        }
-
-        .no-snapshots {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 40px 20px;
-            color: #999;
-        }
-
-        .no-snapshots i {
-            font-size: 48px;
-            margin-bottom: 15px;
-            opacity: 0.3;
-        }
-
-        /* Modal untuk zoom snapshot */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.9);
-        }
-
-        .modal-content {
-            position: relative;
-            margin: 2% auto;
-            max-width: 90%;
-            max-height: 90vh;
-        }
-
-        .modal-content img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 35px;
-            color: #f1f1f1;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 1001;
-        }
-
-        .close-modal:hover {
-            color: #bbb;
-        }
-
-        .status-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .status-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: transform 0.3s;
-        }
-
-        .status-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .status-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-        }
-
-        .status-icon.camera { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .status-icon.detection { background: linear-gradient(135deg, #f093fb, #f5576c); }
-        .status-icon.confidence { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-        .status-icon.time { background: linear-gradient(135deg, #43e97b, #38f9d7); }
-
-        .status-info h3 {
-            margin: 0;
-            font-size: 14px;
-            color: #666;
-            font-weight: 500;
-        }
-
-        .status-info p {
-            margin: 5px 0 0 0;
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        @media (max-width: 1024px) {
-            .dual-view-container {
-                grid-template-columns: 1fr;
-            }
-            .snapshots-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 640px) {
-            .snapshots-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </head>
-<body>
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">
-                <i class="fas fa-heartbeat"></i>
-                <span>Broiler Monitor</span>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-gradient-to-r from-blue-900 to-blue-800 shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="flex items-center space-x-3 text-white">
+                    <i class="fas fa-heartbeat text-2xl text-emerald-400"></i>
+                    <span class="text-xl font-bold">Smart Poultry Vision</span>
+                </a>
+                <div class="flex space-x-1">
+                    <a href="/dashboard" class="px-4 py-2 rounded-lg text-white bg-white/20 font-medium">Dashboard</a>
+                    <a href="/riwayat" class="px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition">Riwayat</a>
+                    <a href="/edukasi" class="px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition">Edukasi</a>
+                </div>
             </div>
-            <ul class="nav-menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/dashboard" class="active">Dashboard</a></li>
-                <li><a href="/riwayat">Riwayat</a></li>
-                <li><a href="/edukasi">Edukasi</a></li>
-            </ul>
         </div>
     </nav>
 
-    <div class="dashboard-container">
-        <div class="container">
-            <h1 class="page-title">
-                <i class="fas fa-tachometer-alt"></i> Dashboard Monitoring
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                <i class="fas fa-tachometer-alt text-blue-600"></i>
+                Dashboard Monitoring
             </h1>
+        </div>
 
-            <div class="status-cards">
-                <div class="status-card">
-                    <div class="status-icon camera">
-                        <i class="fas fa-video"></i>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-video text-white text-xl"></i>
                     </div>
-                    <div class="status-info">
-                        <h3>Status Kamera</h3>
-                        <p id="camera-status">Checking...</p>
-                    </div>
-                </div>
-                <div class="status-card">
-                    <div class="status-icon detection">
-                        <i class="fas fa-radar"></i>
-                    </div>
-                    <div class="status-info">
-                        <h3>Deteksi Terbaru</h3>
-                        <p id="latest-disease">-</p>
-                    </div>
-                </div>
-                <div class="status-card">
-                    <div class="status-icon confidence">
-                        <i class="fas fa-percentage"></i>
-                    </div>
-                    <div class="status-info">
-                        <h3>Confidence</h3>
-                        <p id="confidence-level">0%</p>
-                    </div>
-                </div>
-                <div class="status-card">
-                    <div class="status-icon time">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div class="status-info">
-                        <h3>Last Update</h3>
-                        <p id="last-update">-</p>
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium">Status Kamera</p>
+                        <p id="camera-status" class="text-lg font-bold text-gray-900">Memeriksa...</p>
                     </div>
                 </div>
             </div>
 
-            <div class="dual-view-container">
-                <div class="view-card">
-                    <div class="view-header">
-                        <h3>
+            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-bullseye text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium">Deteksi Terbaru</p>
+                        <p id="latest-disease" class="text-lg font-bold text-gray-900">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-percent text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium">Tingkat Keyakinan</p>
+                        <p id="confidence-level" class="text-lg font-bold text-gray-900">0%</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-clock text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium">Pembaruan Terakhir</p>
+                        <p id="last-update" class="text-lg font-bold text-gray-900">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Stream & Snapshots -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+                    <div class="bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-4 flex items-center justify-between">
+                        <h3 class="text-white font-semibold flex items-center gap-2">
                             <i class="fas fa-video"></i>
-                            Live Stream
+                            Streaming Langsung
                         </h3>
-                        <div style="display: flex; gap: 10px;">
-                            <button class="btn-icon" onclick="refreshStream()" title="Refresh">
-                                <i class="fas fa-sync-alt"></i>
+                        <div class="flex gap-2">
+                            <button onclick="refreshStream()" class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition">
+                                <i class="fas fa-sync-alt text-sm"></i>
                             </button>
-                            <button class="btn-icon" onclick="toggleFullscreen()" title="Fullscreen">
-                                <i class="fas fa-expand"></i>
+                            <button onclick="toggleFullscreen()" class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition">
+                                <i class="fas fa-expand text-sm"></i>
                             </button>
                         </div>
                     </div>
-                    <div class="view-body" id="live-view">
-                        <img id="video-stream" src="{{ url_for('video_feed') }}" alt="Live Stream">
-                        <span class="live-badge">
-                            <i class="fas fa-circle"></i> LIVE
+                    <div class="relative bg-black aspect-video" id="live-view">
+                        <img id="video-stream" src="{{ url_for('video_feed') }}" alt="Live Stream" class="w-full h-full object-contain">
+                        <span class="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2">
+                            <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                            LANGSUNG
                         </span>
                     </div>
                 </div>
+            </div>
 
-                <div class="view-card">
-                    <div class="view-header">
-                        <h3>
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 h-full">
+                    <div class="bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-4">
+                        <h3 class="text-white font-semibold flex items-center gap-2">
                             <i class="fas fa-camera"></i>
-                            Detection Snapshots
+                            Hasil Deteksi
                         </h3>
-                        <span style="font-size: 12px; opacity: 0.8;">Click to enlarge</span>
+                        <p class="text-white/80 text-xs mt-1">Klik untuk memperbesar</p>
                     </div>
-                    <div class="snapshots-grid" id="snapshots-container">
-                        <div class="no-snapshots">
-                            <i class="fas fa-search"></i>
-                            <p>Waiting for detections...</p>
+                    <div id="snapshots-container" class="grid grid-cols-2 gap-2 p-4 max-h-[500px] overflow-y-auto">
+                        <div class="col-span-2 text-center py-12">
+                            <i class="fas fa-search text-gray-300 text-4xl mb-3"></i>
+                            <p class="text-gray-400 text-sm">Menunggu deteksi...</p>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="dashboard-grid">
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h2><i class="fas fa-chart-pie"></i> Statistik Deteksi</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+                <div class="px-6 py-4 border-b border-gray-100">
+                    <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                        <i class="fas fa-chart-pie text-blue-600"></i>
+                        Statistik Deteksi
+                    </h3>
+                </div>
+                <div class="grid grid-cols-5 divide-x divide-gray-100">
+                    <div class="p-6 text-center">
+                        <p class="text-xs text-gray-500 mb-2">Total</p>
+                        <p id="total-detections" class="text-2xl font-bold text-gray-900">0</p>
                     </div>
-                    <div class="stats-container">
-                        <div class="stat-item">
-                            <div class="stat-label">Total Deteksi</div>
-                            <div class="stat-value" id="total-detections">0</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Sehat</div>
-                            <div class="stat-value healthy" id="healthy-count">0</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Coccidiosis</div>
-                            <div class="stat-value warning" id="coccidiosis-count">0</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Newcastle</div>
-                            <div class="stat-value danger" id="newcastle-count">0</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Salmonella</div>
-                            <div class="stat-value danger" id="salmonella-count">0</div>
-                        </div>
+                    <div class="p-6 text-center">
+                        <p class="text-xs text-gray-500 mb-2">Sehat</p>
+                        <p id="healthy-count" class="text-2xl font-bold text-emerald-600">0</p>
+                    </div>
+                    <div class="p-6 text-center">
+                        <p class="text-xs text-gray-500 mb-2">Cocci</p>
+                        <p id="coccidiosis-count" class="text-2xl font-bold text-amber-600">0</p>
+                    </div>
+                    <div class="p-6 text-center">
+                        <p class="text-xs text-gray-500 mb-2">ND</p>
+                        <p id="newcastle-count" class="text-2xl font-bold text-red-600">0</p>
+                    </div>
+                    <div class="p-6 text-center">
+                        <p class="text-xs text-gray-500 mb-2">Salmo</p>
+                        <p id="salmonella-count" class="text-2xl font-bold text-pink-600">0</p>
                     </div>
                 </div>
+            </div>
 
-                <div class="dashboard-card recent-detections">
-                    <div class="card-header">
-                        <h2><i class="fas fa-history"></i> Deteksi Terbaru</h2>
-                        <a href="/riwayat" class="btn-link">Lihat Semua</a>
-                    </div>
-                    <div class="detections-list" id="recent-list">
-                        <p class="no-data">Belum ada deteksi</p>
-                    </div>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+                <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                    <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                        <i class="fas fa-history text-blue-600"></i>
+                        Deteksi Terbaru
+                    </h3>
+                    <a href="/riwayat" class="text-sm text-blue-600 hover:text-blue-700 font-medium">Lihat Semua →</a>
+                </div>
+                <div id="recent-list" class="p-4 space-y-2 max-h-64 overflow-y-auto">
+                    <p class="text-center text-gray-400 py-8 text-sm">Belum ada deteksi</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal untuk zoom snapshot -->
-    <div id="imageModal" class="modal">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
-        <div class="modal-content">
-            <img id="modal-image" src="" alt="Snapshot Detail">
-        </div>
+    <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4" onclick="closeModal()">
+        <button class="absolute top-4 right-4 text-white text-4xl hover:text-gray-300">&times;</button>
+        <img id="modal-image" src="" alt="Detail" class="max-w-full max-h-full rounded-lg shadow-2xl">
     </div>
 
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
         setInterval(updateDashboard, 2000);
         setInterval(updateSnapshots, 3000);
@@ -422,111 +189,85 @@
         updateSnapshots();
 
         function updateDashboard() {
-            fetch('/api/camera_status')
-                .then(res => res.json())
-                .then(data => {
-                    const statusEl = document.getElementById('camera-status');
-                    if (data.status === 'online') {
-                        statusEl.textContent = 'Online';
-                        statusEl.style.color = '#4ade80';
-                    } else {
-                        statusEl.textContent = 'Offline';
-                        statusEl.style.color = '#f87171';
-                    }
-                });
+            fetch('/api/camera_status').then(res => res.json()).then(data => {
+                const el = document.getElementById('camera-status');
+                el.textContent = data.status === 'online' ? 'Terhubung' : 'Terputus';
+                el.className = data.status === 'online' ? 'text-lg font-bold text-emerald-600' : 'text-lg font-bold text-red-600';
+            });
 
-            fetch('/api/latest_detection')
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById('latest-disease').textContent = data.status;
-                    document.getElementById('confidence-level').textContent = data.confidence + '%';
-                    document.getElementById('last-update').textContent = data.timestamp;
-                });
+            fetch('/api/latest_detection').then(res => res.json()).then(data => {
+                document.getElementById('latest-disease').textContent = data.status;
+                document.getElementById('confidence-level').textContent = data.confidence + '%';
+                document.getElementById('last-update').textContent = data.timestamp.split(' ')[1];
+            });
 
-            fetch('/api/statistics')
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById('total-detections').textContent = data.total;
-                    document.getElementById('healthy-count').textContent = data.by_disease['Sehat'] || 0;
-                    document.getElementById('coccidiosis-count').textContent = data.by_disease['Coccidiosis'] || 0;
-                    document.getElementById('newcastle-count').textContent = data.by_disease['Newcastle'] || 0;
-                    document.getElementById('salmonella-count').textContent = data.by_disease['Salmonella'] || 0;
+            fetch('/api/statistics').then(res => res.json()).then(data => {
+                document.getElementById('total-detections').textContent = data.total;
+                document.getElementById('healthy-count').textContent = data.by_disease['Sehat'] || 0;
+                document.getElementById('coccidiosis-count').textContent = data.by_disease['Coccidiosis'] || 0;
+                document.getElementById('newcastle-count').textContent = data.by_disease['Newcastle'] || 0;
+                document.getElementById('salmonella-count').textContent = data.by_disease['Salmonella'] || 0;
 
-                    const recentList = document.getElementById('recent-list');
-                    if (data.recent.length > 0) {
-                        recentList.innerHTML = data.recent.map(item => `
-                            <div class="detection-item ${item.disease.toLowerCase()}">
-                                <div class="detection-disease">${item.disease}</div>
-                                <div class="detection-confidence">${item.confidence}%</div>
-                                <div class="detection-time">${item.timestamp}</div>
+                const list = document.getElementById('recent-list');
+                if (data.recent && data.recent.length > 0) {
+                    const colors = {
+                        'Sehat': 'border-emerald-500 bg-emerald-50',
+                        'Coccidiosis': 'border-amber-500 bg-amber-50',
+                        'Newcastle': 'border-red-500 bg-red-50',
+                        'Salmonella': 'border-pink-500 bg-pink-50'
+                    };
+                    list.innerHTML = data.recent.map(item => `
+                        <div class="flex items-center justify-between p-3 rounded-lg border-l-4 ${colors[item.disease]}">
+                            <span class="font-medium text-gray-900 text-sm">${item.disease}</span>
+                            <div class="flex items-center gap-3">
+                                <span class="text-blue-600 font-semibold text-sm">${item.confidence}%</span>
+                                <span class="text-gray-500 text-xs">${item.timestamp.split(' ')[1]}</span>
                             </div>
-                        `).join('');
-                    }
-                });
+                        </div>
+                    `).join('');
+                }
+            });
         }
 
         function updateSnapshots() {
-            fetch('/api/detection_snapshots')
-                .then(res => res.json())
-                .then(data => {
-                    const container = document.getElementById('snapshots-container');
-                    
-                    if (data.snapshots && data.snapshots.length > 0) {
-                        container.innerHTML = data.snapshots.map((snap, idx) => `
-                            <div class="snapshot-item" onclick="openModal('${snap.url}')">
-                                <img src="${snap.url}?t=${new Date().getTime()}" alt="Detection ${idx+1}">
-                                <div class="snapshot-overlay">
-                                    Detection #${idx+1}
-                                </div>
+            fetch('/api/detection_snapshots').then(res => res.json()).then(data => {
+                const container = document.getElementById('snapshots-container');
+                if (data.snapshots && data.snapshots.length > 0) {
+                    container.innerHTML = data.snapshots.map((snap, idx) => `
+                        <div onclick="openModal('${snap.url}')" class="relative group cursor-pointer rounded-lg overflow-hidden aspect-square border-2 border-gray-200 hover:border-blue-500 transition">
+                            <img src="${snap.url}?t=${Date.now()}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                                <i class="fas fa-search-plus text-white text-xl"></i>
                             </div>
-                        `).join('');
-                    } else {
-                        container.innerHTML = `
-                            <div class="no-snapshots">
-                                <i class="fas fa-search"></i>
-                                <p>Waiting for detections...</p>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 p-2">
+                                <p class="text-white text-xs font-medium">#${idx+1}</p>
                             </div>
-                        `;
-                    }
-                });
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<div class="col-span-2 text-center py-12"><i class="fas fa-search text-gray-300 text-4xl mb-3"></i><p class="text-gray-400 text-sm">Menunggu deteksi...</p></div>';
+                }
+            });
         }
 
-        function openModal(imageUrl) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modal-image');
-            modal.style.display = 'block';
-            modalImg.src = imageUrl;
+        function openModal(url) {
+            document.getElementById('imageModal').classList.remove('hidden');
+            document.getElementById('modal-image').src = url;
         }
 
         function closeModal() {
-            document.getElementById('imageModal').style.display = 'none';
+            document.getElementById('imageModal').classList.add('hidden');
         }
-
-        window.onclick = function(event) {
-            const modal = document.getElementById('imageModal');
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeModal();
-            }
-        });
 
         function refreshStream() {
             const img = document.getElementById('video-stream');
-            img.src = img.src.split('?')[0] + '?t=' + new Date().getTime();
+            img.src = img.src.split('?')[0] + '?t=' + Date.now();
         }
 
         function toggleFullscreen() {
-            const element = document.getElementById('live-view');
-            if (!document.fullscreenElement) {
-                element.requestFullscreen();
-            } else {
-                document.exitFullscreen();
-            }
+            const el = document.getElementById('live-view');
+            if (!document.fullscreenElement) el.requestFullscreen();
+            else document.exitFullscreen();
         }
     </script>
 </body>
