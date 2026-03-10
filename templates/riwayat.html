@@ -4,76 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riwayat - Broiler Monitor</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">
-                <i class="fas fa-heartbeat"></i>
-                <span>Broiler Monitor</span>
+<body class="bg-gray-50">
+    <nav class="bg-gradient-to-r from-blue-900 to-blue-800 shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="flex items-center space-x-3 text-white">
+                    <i class="fas fa-heartbeat text-2xl text-emerald-400"></i>
+                    <span class="text-xl font-bold">Broiler Monitor</span>
+                </a>
+                <div class="flex space-x-1">
+                    <a href="/dashboard" class="px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition">Dashboard</a>
+                    <a href="/riwayat" class="px-4 py-2 rounded-lg text-white bg-white/20 font-medium">Riwayat</a>
+                    <a href="/edukasi" class="px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition">Edukasi</a>
+                </div>
             </div>
-            <ul class="nav-menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/dashboard">Dashboard</a></li>
-                <li><a href="/riwayat" class="active">Riwayat</a></li>
-                <li><a href="/edukasi">Edukasi</a></li>
-            </ul>
         </div>
     </nav>
 
-    <!-- History Content -->
-    <div class="history-container">
-        <div class="container">
-            <h1 class="page-title">
-                <i class="fas fa-history"></i> Riwayat Deteksi
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                <i class="fas fa-history text-blue-600"></i>
+                Riwayat Deteksi
             </h1>
+        </div>
 
-            <!-- Filter Section -->
-            <div class="filter-section">
-                <div class="filter-group">
-                    <label>Filter Penyakit:</label>
-                    <select id="disease-filter" onchange="filterHistory()">
-                        <option value="all">Semua</option>
-                        <option value="Sehat">Sehat</option>
-                        <option value="Coccidiosis">Coccidiosis</option>
-                        <option value="Newcastle">Newcastle</option>
-                        <option value="Salmonella">Salmonella</option>
-                    </select>
-                </div>
-                <button class="btn btn-primary" onclick="exportData()">
-                    <i class="fas fa-download"></i> Export Data
-                </button>
-            </div>
+        <div class="flex flex-wrap gap-3 mb-6">
+            <button onclick="filterHistory('all')" class="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium transition hover:bg-blue-700">
+                <i class="fas fa-list"></i> Semua
+            </button>
+            <button onclick="filterHistory('Sehat')" class="px-4 py-2 rounded-lg bg-white border-2 border-gray-300 text-gray-700 font-medium transition hover:border-emerald-500 hover:text-emerald-600">
+                <i class="fas fa-check-circle"></i> Sehat
+            </button>
+            <button onclick="filterHistory('Coccidiosis')" class="px-4 py-2 rounded-lg bg-white border-2 border-gray-300 text-gray-700 font-medium transition hover:border-amber-500 hover:text-amber-600">
+                <i class="fas fa-exclamation-triangle"></i> Coccidiosis
+            </button>
+            <button onclick="filterHistory('Newcastle')" class="px-4 py-2 rounded-lg bg-white border-2 border-gray-300 text-gray-700 font-medium transition hover:border-red-500 hover:text-red-600">
+                <i class="fas fa-virus"></i> Newcastle
+            </button>
+            <button onclick="filterHistory('Salmonella')" class="px-4 py-2 rounded-lg bg-white border-2 border-gray-300 text-gray-700 font-medium transition hover:border-pink-500 hover:text-pink-600">
+                <i class="fas fa-bacterium"></i> Salmonella
+            </button>
+        </div>
 
-            <!-- History Table -->
-            <div class="history-table-container">
-                <table class="history-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Status</th>
-                            <th>Confidence</th>
-                            <th>Tanggal & Waktu</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="history-tbody">
-                        <tr>
-                            <td colspan="5" class="no-data">Memuat data...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-gray-50 border-b border-gray-200">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">No</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Penyakit</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Tingkat Keyakinan</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">Waktu</th>
+                    </tr>
+                </thead>
+                <tbody id="history-tbody" class="divide-y divide-gray-100">
+                    <tr>
+                        <td colspan="4" class="px-6 py-12 text-center">
+                            <i class="fas fa-spinner fa-spin text-gray-300 text-4xl mb-3"></i>
+                            <p class="text-gray-400">Memuat data...</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
     <script>
         let historyData = [];
+        let currentFilter = 'all';
 
-        // Load history on page load
         loadHistory();
 
         function loadHistory() {
@@ -81,72 +83,67 @@
                 .then(res => res.json())
                 .then(data => {
                     historyData = data;
-                    renderHistory(data);
+                    renderHistory();
                 })
-                .catch(err => {
-                    console.error('Error loading history:', err);
-                    document.getElementById('history-tbody').innerHTML = 
-                        '<tr><td colspan="5" class="no-data">Gagal memuat data</td></tr>';
+                .catch(() => {
+                    document.getElementById('history-tbody').innerHTML = `
+                        <tr><td colspan="4" class="px-6 py-12 text-center">
+                            <i class="fas fa-exclamation-circle text-red-300 text-4xl mb-3"></i>
+                            <p class="text-gray-400">Gagal memuat data</p>
+                        </td></tr>
+                    `;
                 });
         }
 
-        function renderHistory(data) {
+        function filterHistory(disease) {
+            currentFilter = disease;
+            document.querySelectorAll('button[onclick^="filterHistory"]').forEach(btn => {
+                btn.className = 'px-4 py-2 rounded-lg bg-white border-2 border-gray-300 text-gray-700 font-medium transition';
+            });
+            event.target.closest('button').className = 'px-4 py-2 rounded-lg bg-blue-600 text-white font-medium transition hover:bg-blue-700';
+            renderHistory();
+        }
+
+        function renderHistory() {
             const tbody = document.getElementById('history-tbody');
+            let filtered = currentFilter === 'all' ? historyData : historyData.filter(i => i.disease === currentFilter);
             
-            if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="no-data">Belum ada riwayat deteksi</td></tr>';
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr><td colspan="4" class="px-6 py-12 text-center">
+                        <i class="fas fa-inbox text-gray-300 text-4xl mb-3"></i>
+                        <p class="text-gray-400">Tidak ada data</p>
+                    </td></tr>
+                `;
                 return;
             }
+            
+            const colors = {
+                'Sehat': 'bg-emerald-100 text-emerald-800',
+                'Coccidiosis': 'bg-amber-100 text-amber-800',
+                'Newcastle': 'bg-red-100 text-red-800',
+                'Salmonella': 'bg-pink-100 text-pink-800'
+            };
 
-            tbody.innerHTML = data.map((item, index) => `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td>
-                        <span class="badge badge-${item.disease.toLowerCase()}">
+            tbody.innerHTML = filtered.map((item, idx) => `
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-4 text-gray-700">${idx + 1}</td>
+                    <td class="px-6 py-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold ${colors[item.disease]}">
                             ${item.disease}
                         </span>
                     </td>
-                    <td>${item.confidence}%</td>
-                    <td>${item.timestamp}</td>
-                    <td>
-                        <button class="btn-icon" onclick="viewDetail(${index})">
-                            <i class="fas fa-eye"></i>
-                        </button>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="flex-1 bg-gray-200 rounded-full h-2 max-w-xs">
+                                <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 h-2 rounded-full" style="width: ${item.confidence}%"></div>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-700 min-w-[50px]">${Math.round(item.confidence)}%</span>
+                        </div>
                     </td>
+                    <td class="px-6 py-4 text-gray-600 text-sm">${item.timestamp}</td>
                 </tr>
             `).join('');
-        }
-
-        function filterHistory() {
-            const filter = document.getElementById('disease-filter').value;
-            
-            if (filter === 'all') {
-                renderHistory(historyData);
-            } else {
-                const filtered = historyData.filter(item => item.disease === filter);
-                renderHistory(filtered);
-            }
-        }
-
-        function viewDetail(index) {
-            const item = historyData[index];
-            alert(`Detail Deteksi:\n\nPenyakit: ${item.disease}\nConfidence: ${item.confidence}%\nWaktu: ${item.timestamp}`);
-        }
-
-        function exportData() {
-            // Convert to CSV
-            let csv = 'No,Penyakit,Confidence,Tanggal & Waktu\n';
-            historyData.forEach((item, index) => {
-                csv += `${index + 1},${item.disease},${item.confidence}%,${item.timestamp}\n`;
-            });
-
-            // Download
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `riwayat_deteksi_${new Date().toISOString().split('T')[0]}.csv`;
-            a.click();
         }
     </script>
 </body>
