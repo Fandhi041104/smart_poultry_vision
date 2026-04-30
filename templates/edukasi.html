@@ -3,196 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edukasi - Broiler Monitor</title>
+    <title>Edukasi - Smart Poultry Vision</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .img-zoom { cursor: zoom-in; transition: transform 0.2s, box-shadow 0.2s; }
+        .img-zoom:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        #zoom-modal { animation: fadeIn 0.2s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        #zoom-modal img { animation: scaleIn 0.25s ease; }
+        @keyframes scaleIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    </style>
 </head>
 <body class="bg-gray-50">
+
     <nav class="bg-gradient-to-r from-blue-900 to-blue-800 shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <a href="/" class="flex items-center space-x-3 text-white">
-                    <i class="fas fa-heartbeat text-2xl text-emerald-400"></i>
-                    <span class="text-xl font-bold">Broiler Monitor</span>
+                <a href="/" class="flex items-center space-x-2 text-white min-w-0">
+                    <i class="fas fa-heartbeat text-xl text-emerald-400 flex-shrink-0"></i>
+                    <span class="text-base sm:text-xl font-bold truncate">Smart Poultry Vision</span>
                 </a>
-                <div class="flex space-x-1">
-                    <a href="/dashboard" class="px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition">Dashboard</a>
-                    <a href="/riwayat" class="px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition">Riwayat</a>
-                    <a href="/edukasi" class="px-4 py-2 rounded-lg text-white bg-white/20 font-medium">Edukasi</a>
+                <div class="flex space-x-1 flex-shrink-0">
+                    <a href="/dashboard" class="px-2 sm:px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition text-xs sm:text-sm">Dashboard</a>
+                    <a href="/riwayat"   class="px-2 sm:px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition text-xs sm:text-sm">Riwayat</a>
+                    <a href="/edukasi"   class="px-2 sm:px-4 py-2 rounded-lg text-white bg-white/20 font-medium text-xs sm:text-sm">Edukasi</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+
+        <div class="mb-5 sm:mb-8">
+            <h1 class="text-xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2 sm:gap-3">
                 <i class="fas fa-book-medical text-blue-600"></i>
                 Edukasi Penyakit Ayam Broiler
             </h1>
+            <p class="text-gray-500 mt-1 text-xs sm:text-sm">Klik pada gambar feses untuk memperbesar</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+
+            <!-- SEHAT -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-4">
-                    <h3 class="text-white font-bold text-lg flex items-center gap-2">
+                <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 sm:px-6 py-3 sm:py-4">
+                    <h3 class="text-white font-bold text-base sm:text-lg flex items-center gap-2">
                         <i class="fas fa-check-circle"></i> Kondisi Sehat
                     </h3>
                 </div>
-                <div class="p-6 space-y-4">
-                    <div>
-                        <h4 class="font-semibold text-gray-900 mb-2">Ciri-ciri Feses Sehat:</h4>
-                        <ul class="space-y-1 text-sm text-gray-700">
-                            <li>• Warna coklat kehijauan normal</li>
-                            <li>• Konsistensi padat namun tidak keras</li>
-                            <li>• Tidak berbau menyengat</li>
-                            <li>• Bentuk teratur dan kompak</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-gray-900 mb-2">Tips Menjaga Kesehatan:</h4>
-                        <ul class="space-y-1 text-sm text-gray-700">
-                            <li>• Pakan berkualitas tinggi</li>
-                            <li>• Air minum selalu bersih</li>
-                            <li>• Jaga kebersihan kandang</li>
-                            <li>• Vaksinasi rutin</li>
-                        </ul>
+                <div class="p-4 sm:p-6">
+                    <!-- Stack vertikal di mobile kecil, horizontal di mobile lebih besar -->
+                    <div class="flex flex-col xs:flex-row gap-3 sm:gap-4 items-start">
+                        <div class="flex-shrink-0 text-center mx-auto xs:mx-0">
+                            <img src="{{ url_for('static', filename='images/healthy.998.jpg') }}"
+                                 alt="Contoh Feses Sehat"
+                                 class="w-24 h-24 sm:w-28 sm:h-28 object-contain rounded-lg border-2 border-emerald-200 bg-gray-50 img-zoom"
+                                 onclick="openZoom(this.src, 'Contoh Feses Sehat')"
+                                 onerror="this.src='https://via.placeholder.com/112/10b981/ffffff?text=Sehat'">
+                            <p class="text-xs text-gray-400 mt-1 italic">Klik untuk perbesar</p>
+                        </div>
+                        <div class="flex-1 space-y-3 w-full">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1 text-xs sm:text-sm">Ciri-ciri Feses Sehat:</h4>
+                                <ul class="space-y-0.5 text-xs sm:text-sm text-gray-700">
+                                    <li>• Warna coklat kehijauan normal</li>
+                                    <li>• Konsistensi padat namun tidak keras</li>
+                                    <li>• Tidak berbau menyengat</li>
+                                    <li>• Bentuk teratur dan kompak</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1 text-xs sm:text-sm">Tips Menjaga Kesehatan:</h4>
+                                <ul class="space-y-0.5 text-xs sm:text-sm text-gray-700">
+                                    <li>• Pakan berkualitas tinggi</li>
+                                    <li>• Air minum selalu bersih</li>
+                                    <li>• Jaga kebersihan kandang</li>
+                                    <li>• Vaksinasi rutin</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            <!-- COCCIDIOSIS -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-4">
-                    <h3 class="text-white font-bold text-lg flex items-center gap-2">
+                <div class="bg-gradient-to-r from-amber-500 to-amber-600 px-4 sm:px-6 py-3 sm:py-4">
+                    <h3 class="text-white font-bold text-base sm:text-lg flex items-center gap-2">
                         <i class="fas fa-exclamation-triangle"></i> Coccidiosis
                     </h3>
                 </div>
-                <div class="p-6 space-y-4">
-                    <div>
-                        <h4 class="font-semibold text-gray-900 mb-2">Penyebab:</h4>
-                        <p class="text-sm text-gray-700">Parasit Coccidia yang menyerang usus ayam.</p>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-gray-900 mb-2">Gejala:</h4>
-                        <ul class="space-y-1 text-sm text-gray-700">
-                            <li>• Feses berdarah</li>
-                            <li>• Diare warna kemerahan</li>
-                            <li>• Ayam lesu</li>
-                            <li>• Bulu kusam</li>
-                        </ul>
-                    </div>
-                    <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded">
-                        <p class="text-xs text-amber-900"><strong>⚠️</strong> Dapat menular cepat!</p>
+                <div class="p-4 sm:p-6">
+                    <div class="flex flex-col xs:flex-row gap-3 sm:gap-4 items-start">
+                        <div class="flex-shrink-0 text-center mx-auto xs:mx-0">
+                            <img src="{{ url_for('static', filename='images/cocci.27.jpg') }}"
+                                 alt="Contoh Feses Coccidiosis"
+                                 class="w-24 h-24 sm:w-28 sm:h-28 object-contain rounded-lg border-2 border-amber-200 bg-gray-50 img-zoom"
+                                 onclick="openZoom(this.src, 'Contoh Feses Coccidiosis')"
+                                 onerror="this.src='https://via.placeholder.com/112/f59e0b/ffffff?text=Cocci'">
+                            <p class="text-xs text-gray-400 mt-1 italic">Klik untuk perbesar</p>
+                        </div>
+                        <div class="flex-1 space-y-3 w-full">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1 text-xs sm:text-sm">Penyebab:</h4>
+                                <p class="text-xs sm:text-sm text-gray-700">Parasit Coccidia yang menyerang usus ayam, berkembang di lingkungan lembab dan kotor.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1 text-xs sm:text-sm">Gejala:</h4>
+                                <ul class="space-y-0.5 text-xs sm:text-sm text-gray-700">
+                                    <li>• Feses berdarah atau bercampur darah</li>
+                                    <li>• Diare warna kemerahan</li>
+                                    <li>• Ayam lesu, nafsu makan menurun</li>
+                                    <li>• Bulu kusam dan berdiri</li>
+                                </ul>
+                            </div>
+                            <div class="bg-amber-50 border-l-4 border-amber-500 p-2 sm:p-3 rounded">
+                                <p class="text-xs text-amber-900"><strong>⚠️ Perhatian:</strong> Dapat menular ke seluruh kandang. Segera lakukan tindakan!</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            <!-- NEWCASTLE -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="bg-gradient-to-r from-red-500 to-red-600 px-6 py-4">
-                    <h3 class="text-white font-bold text-lg flex items-center gap-2">
-                        <i class="fas fa-virus"></i> Newcastle (ND)
+                <div class="bg-gradient-to-r from-red-500 to-red-600 px-4 sm:px-6 py-3 sm:py-4">
+                    <h3 class="text-white font-bold text-base sm:text-lg flex items-center gap-2">
+                        <i class="fas fa-virus"></i> Newcastle Disease (ND)
                     </h3>
                 </div>
-                <div class="p-6 space-y-4">
-                    <div>
-                        <h4 class="font-semibold text-gray-900 mb-2">Penyebab:</h4>
-                        <p class="text-sm text-gray-700">Virus NDV yang sangat menular.</p>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-gray-900 mb-2">Gejala:</h4>
-                        <ul class="space-y-1 text-sm text-gray-700">
-                            <li>• Feses hijau keputihan</li>
-                            <li>• Gangguan pernapasan</li>
-                            <li>• Leher bengkok</li>
-                            <li>• Kejang-kejang</li>
-                        </ul>
-                    </div>
-                    <div class="bg-red-50 border-l-4 border-red-500 p-3 rounded">
-                        <p class="text-xs text-red-900"><strong>🚨</strong> Tidak ada obat spesifik!</p>
+                <div class="p-4 sm:p-6">
+                    <div class="flex flex-col xs:flex-row gap-3 sm:gap-4 items-start">
+                        <div class="flex-shrink-0 text-center mx-auto xs:mx-0">
+                            <img src="{{ url_for('static', filename='images/ncd.154.jpg') }}"
+                                 alt="Contoh Feses Newcastle"
+                                 class="w-24 h-24 sm:w-28 sm:h-28 object-contain rounded-lg border-2 border-red-200 bg-gray-50 img-zoom"
+                                 onclick="openZoom(this.src, 'Contoh Feses Newcastle Disease')"
+                                 onerror="this.src='https://via.placeholder.com/112/ef4444/ffffff?text=Newcastle'">
+                            <p class="text-xs text-gray-400 mt-1 italic">Klik untuk perbesar</p>
+                        </div>
+                        <div class="flex-1 space-y-3 w-full">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1 text-xs sm:text-sm">Penyebab:</h4>
+                                <p class="text-xs sm:text-sm text-gray-700">Virus Newcastle Disease (NDV) sangat menular dan dapat menyebabkan kematian massal.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1 text-xs sm:text-sm">Gejala:</h4>
+                                <ul class="space-y-0.5 text-xs sm:text-sm text-gray-700">
+                                    <li>• Feses hijau keputihan (diare)</li>
+                                    <li>• Gangguan pernapasan (ngorok, batuk)</li>
+                                    <li>• Tortikolis (leher bengkok)</li>
+                                    <li>• Kejang-kejang dan kelumpuhan</li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 border-l-4 border-red-500 p-2 sm:p-3 rounded">
+                                <p class="text-xs text-red-900"><strong>🚨 Tidak ada pengobatan spesifik!</strong> Fokus pada pencegahan dan vaksinasi.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            <!-- SALMONELLA -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="bg-gradient-to-r from-pink-500 to-pink-600 px-6 py-4">
-                    <h3 class="text-white font-bold text-lg flex items-center gap-2">
+                <div class="bg-gradient-to-r from-pink-500 to-pink-600 px-4 sm:px-6 py-3 sm:py-4">
+                    <h3 class="text-white font-bold text-base sm:text-lg flex items-center gap-2">
                         <i class="fas fa-bacterium"></i> Salmonellosis
                     </h3>
                 </div>
-                <div class="p-6 space-y-4">
-                    <div>
-                        <h4 class="font-semibold text-gray-900 mb-2">Penyebab:</h4>
-                        <p class="text-sm text-gray-700">Bakteri Salmonella.</p>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-gray-900 mb-2">Gejala:</h4>
-                        <ul class="space-y-1 text-sm text-gray-700">
-                            <li>• Feses putih seperti kapur</li>
-                            <li>• Diare berbau busuk</li>
-                            <li>• Ayam menggigil</li>
-                            <li>• Kematian mendadak</li>
-                        </ul>
-                    </div>
-                    <div class="bg-pink-50 border-l-4 border-pink-500 p-3 rounded">
-                        <p class="text-xs text-pink-900"><strong>👤</strong> Bisa menular ke manusia!</p>
+                <div class="p-4 sm:p-6">
+                    <div class="flex flex-col xs:flex-row gap-3 sm:gap-4 items-start">
+                        <div class="flex-shrink-0 text-center mx-auto xs:mx-0">
+                            <img src="{{ url_for('static', filename='images/salmo.195.jpg') }}"
+                                 alt="Contoh Feses Salmonella"
+                                 class="w-24 h-24 sm:w-28 sm:h-28 object-contain rounded-lg border-2 border-pink-200 bg-gray-50 img-zoom"
+                                 onclick="openZoom(this.src, 'Contoh Feses Salmonellosis')"
+                                 onerror="this.src='https://via.placeholder.com/112/ec4899/ffffff?text=Salmonella'">
+                            <p class="text-xs text-gray-400 mt-1 italic">Klik untuk perbesar</p>
+                        </div>
+                        <div class="flex-1 space-y-3 w-full">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1 text-xs sm:text-sm">Penyebab:</h4>
+                                <p class="text-xs sm:text-sm text-gray-700">Bakteri Salmonella (S. pullorum, S. typhimurium) yang menginfeksi saluran pencernaan.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1 text-xs sm:text-sm">Gejala:</h4>
+                                <ul class="space-y-0.5 text-xs sm:text-sm text-gray-700">
+                                    <li>• Feses putih seperti kapur</li>
+                                    <li>• Diare kuning kehijauan berbau busuk</li>
+                                    <li>• Ayam menggigil dan mengantuk</li>
+                                    <li>• Kematian mendadak pada anak ayam</li>
+                                </ul>
+                            </div>
+                            <div class="bg-pink-50 border-l-4 border-pink-500 p-2 sm:p-3 rounded">
+                                <p class="text-xs text-pink-900"><strong>👤 Zoonosis:</strong> Dapat menular ke manusia! Selalu cuci tangan.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
         </div>
+    </div>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <i class="fas fa-question-circle text-blue-600"></i>
-                Pertanyaan Umum (FAQ)
-            </h3>
-
-            <div class="space-y-4">
-                <div class="border-b border-gray-200 pb-4">
-                    <button onclick="toggleFaq(this)" class="w-full text-left flex items-center justify-between group">
-                        <span class="font-semibold text-gray-900 group-hover:text-blue-600">Berapa akurasi sistem deteksi?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transform transition"></i>
-                    </button>
-                    <div class="hidden mt-3 text-sm text-gray-700">
-                        Sistem menggunakan YOLOv11 dengan akurasi 85-90%. Akurasi tergantung pencahayaan dan jarak kamera (optimal 30-50 cm).
-                    </div>
-                </div>
-
-                <div class="border-b border-gray-200 pb-4">
-                    <button onclick="toggleFaq(this)" class="w-full text-left flex items-center justify-between group">
-                        <span class="font-semibold text-gray-900 group-hover:text-blue-600">Kapan harus memanggil dokter hewan?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transform transition"></i>
-                    </button>
-                    <div class="hidden mt-3 text-sm text-gray-700">
-                        Segera hubungi jika: confidence >70%, gejala pada banyak ayam, kondisi memburuk cepat, atau terdapat kematian mendadak.
-                    </div>
-                </div>
-
-                <div class="pb-4">
-                    <button onclick="toggleFaq(this)" class="w-full text-left flex items-center justify-between group">
-                        <span class="font-semibold text-gray-900 group-hover:text-blue-600">Bagaimana cara membersihkan kandang?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transform transition"></i>
-                    </button>
-                    <div class="hidden mt-3 text-sm text-gray-700">
-                        Keluarkan ayam → Buang kotoran → Cuci dengan air → Disinfektan → Kering 1-2 hari → Taburi kapur/sekam. Lakukan rutin 2 minggu sekali.
-                    </div>
-                </div>
-            </div>
+    <!-- Modal Zoom -->
+    <div id="zoom-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex flex-col items-center justify-center p-4"
+         onclick="closeZoom()">
+        <div class="relative w-full max-w-sm sm:max-w-lg" onclick="event.stopPropagation()">
+            <button onclick="closeZoom()" class="absolute -top-8 right-0 text-white/80 hover:text-white text-xs sm:text-sm flex items-center gap-1 transition">
+                <i class="fas fa-times"></i> Tutup (ESC)
+            </button>
+            <img id="zoom-img" src="" alt="" class="w-full rounded-xl shadow-2xl border-4 border-white/20 object-contain max-h-[75vh]">
+            <p id="zoom-caption" class="text-center text-white/90 text-xs sm:text-sm mt-3 font-medium"></p>
         </div>
     </div>
 
     <script>
-        function toggleFaq(btn) {
-            const content = btn.nextElementSibling;
-            const icon = btn.querySelector('i');
-            document.querySelectorAll('button[onclick="toggleFaq(this)"]').forEach(b => {
-                b.nextElementSibling.classList.add('hidden');
-                b.querySelector('i').classList.remove('rotate-180');
-            });
-            if (content.classList.contains('hidden')) {
-                content.classList.remove('hidden');
-                icon.classList.add('rotate-180');
-            }
+        function openZoom(src, caption) {
+            document.getElementById('zoom-img').src = src;
+            document.getElementById('zoom-caption').textContent = caption;
+            document.getElementById('zoom-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
         }
+        function closeZoom() {
+            document.getElementById('zoom-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeZoom(); });
     </script>
 </body>
 </html>
