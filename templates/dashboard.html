@@ -3,108 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Broiler Monitor</title>
+    <title>Dashboard - Smart Poultry Vision</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-50">
-    <!-- Navbar -->
+
     <nav class="bg-gradient-to-r from-blue-900 to-blue-800 shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <a href="/" class="flex items-center space-x-3 text-white">
-                    <i class="fas fa-heartbeat text-2xl text-emerald-400"></i>
-                    <span class="text-xl font-bold">Smart Poultry Vision</span>
+                <a href="/" class="flex items-center space-x-2 text-white min-w-0">
+                    <i class="fas fa-heartbeat text-xl text-emerald-400 flex-shrink-0"></i>
+                    <span class="text-base sm:text-xl font-bold truncate">Smart Poultry Vision</span>
                 </a>
-                <div class="flex space-x-1">
-                    <a href="/dashboard" class="px-4 py-2 rounded-lg text-white bg-white/20 font-medium">Dashboard</a>
-                    <a href="/riwayat" class="px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition">Riwayat</a>
-                    <a href="/edukasi" class="px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition">Edukasi</a>
+                <div class="flex space-x-1 flex-shrink-0">
+                    <a href="/dashboard" class="px-2 sm:px-4 py-2 rounded-lg text-white bg-white/20 font-medium text-xs sm:text-sm">Dashboard</a>
+                    <a href="/riwayat" class="px-2 sm:px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition text-xs sm:text-sm">Riwayat</a>
+                    <a href="/edukasi" class="px-2 sm:px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition text-xs sm:text-sm">Edukasi</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
+
+        <div class="mb-5 sm:mb-8">
+            <h1 class="text-xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2 sm:gap-3">
                 <i class="fas fa-tachometer-alt text-blue-600"></i>
                 Dashboard Monitoring
             </h1>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-video text-white text-xl"></i>
+        <!-- Status Cards: 2 kolom di mobile, 4 di desktop -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-5 sm:mb-8">
+            <div class="bg-white rounded-xl shadow-sm p-3 sm:p-6 border border-gray-100">
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <div class="w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-video text-white text-xs sm:text-xl"></i>
                     </div>
-                    <div>
-                        <p class="text-sm text-gray-500 font-medium">Status Kamera</p>
-                        <p id="camera-status" class="text-lg font-bold text-gray-900">Memeriksa...</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-bullseye text-white text-xl"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500 font-medium">Deteksi Terbaru</p>
-                        <p id="latest-disease" class="text-lg font-bold text-gray-900">-</p>
+                    <div class="min-w-0">
+                        <p class="text-xs text-gray-500 font-medium leading-tight">Status Kamera</p>
+                        <p id="camera-status" class="text-xs sm:text-lg font-bold text-gray-900 truncate mt-0.5">Memeriksa...</p>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-percent text-white text-xl"></i>
+            <div class="bg-white rounded-xl shadow-sm p-3 sm:p-6 border border-gray-100">
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <div class="w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-bullseye text-white text-xs sm:text-xl"></i>
                     </div>
-                    <div>
-                        <p class="text-sm text-gray-500 font-medium">Tingkat Keyakinan</p>
-                        <p id="confidence-level" class="text-lg font-bold text-gray-900">0%</p>
+                    <div class="min-w-0">
+                        <p class="text-xs text-gray-500 font-medium leading-tight">Deteksi Terbaru</p>
+                        <p id="latest-disease" class="text-xs sm:text-lg font-bold text-gray-900 truncate mt-0.5">-</p>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-clock text-white text-xl"></i>
+            <div class="bg-white rounded-xl shadow-sm p-3 sm:p-6 border border-gray-100">
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <div class="w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-percent text-white text-xs sm:text-xl"></i>
                     </div>
-                    <div>
-                        <p class="text-sm text-gray-500 font-medium">Pembaruan Terakhir</p>
-                        <p id="last-update" class="text-lg font-bold text-gray-900">-</p>
+                    <div class="min-w-0">
+                        <p class="text-xs text-gray-500 font-medium leading-tight">Tingkat Keyakinan</p>
+                        <p id="confidence-level" class="text-xs sm:text-lg font-bold text-gray-900 mt-0.5">0%</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm p-3 sm:p-6 border border-gray-100">
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <div class="w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-clock text-white text-xs sm:text-xl"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs text-gray-500 font-medium leading-tight">Pembaruan Terakhir</p>
+                        <p id="last-update" class="text-xs sm:text-lg font-bold text-gray-900 mt-0.5">-</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Live Stream & Snapshots -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-5 sm:mb-8">
             <div class="lg:col-span-2">
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
-                    <div class="bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-4 flex items-center justify-between">
-                        <h3 class="text-white font-semibold flex items-center gap-2">
+                    <div class="bg-gradient-to-r from-purple-600 to-blue-600 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+                        <h3 class="text-white font-semibold flex items-center gap-2 text-sm sm:text-base">
                             <i class="fas fa-video"></i>
                             Streaming Langsung
                         </h3>
                         <div class="flex gap-2">
-                            <button onclick="refreshStream()" class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition">
-                                <i class="fas fa-sync-alt text-sm"></i>
+                            <button onclick="refreshStream()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition">
+                                <i class="fas fa-sync-alt text-xs sm:text-sm"></i>
                             </button>
-                            <button onclick="toggleFullscreen()" class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition">
-                                <i class="fas fa-expand text-sm"></i>
+                            <button onclick="toggleFullscreen()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition">
+                                <i class="fas fa-expand text-xs sm:text-sm"></i>
                             </button>
                         </div>
                     </div>
                     <div class="relative bg-black aspect-video" id="live-view">
                         <img id="video-stream" src="{{ url_for('video_feed') }}" alt="Live Stream" class="w-full h-full object-contain">
-                        <span class="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2">
-                            <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                        <span class="absolute top-2 left-2 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs font-bold flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
                             LANGSUNG
                         </span>
                     </div>
@@ -112,102 +114,135 @@
             </div>
 
             <div class="lg:col-span-1">
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 h-full">
-                    <div class="bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-4">
-                        <h3 class="text-white font-semibold flex items-center gap-2">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+                    <div class="bg-gradient-to-r from-purple-600 to-blue-600 px-4 sm:px-6 py-3 sm:py-4">
+                        <h3 class="text-white font-semibold flex items-center gap-2 text-sm sm:text-base">
                             <i class="fas fa-camera"></i>
                             Hasil Deteksi
                         </h3>
-                        <p class="text-white/80 text-xs mt-1">Klik untuk memperbesar</p>
+                        <p class="text-white/80 text-xs mt-0.5">Klik untuk memperbesar</p>
                     </div>
-                    <div id="snapshots-container" class="grid grid-cols-2 gap-2 p-4 max-h-[500px] overflow-y-auto">
-                        <div class="col-span-2 text-center py-12">
-                            <i class="fas fa-search text-gray-300 text-4xl mb-3"></i>
-                            <p class="text-gray-400 text-sm">Menunggu deteksi...</p>
+                    <!-- 3 kolom di mobile (landscape/tablet), 2 di desktop -->
+                    <div id="snapshots-container" class="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-2 gap-2 p-3 max-h-48 sm:max-h-64 lg:max-h-[420px] overflow-y-auto">
+                        <div class="col-span-3 lg:col-span-2 text-center py-8">
+                            <i class="fas fa-search text-gray-300 text-2xl sm:text-3xl mb-2"></i>
+                            <p class="text-gray-400 text-xs">Menunggu deteksi...</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-                <div class="px-6 py-4 border-b border-gray-100">
-                    <h3 class="font-semibold text-gray-900 flex items-center gap-2">
-                        <i class="fas fa-chart-pie text-blue-600"></i>
-                        Statistik Deteksi
-                    </h3>
+        <!-- Statistik Hari Ini -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 mb-5 sm:mb-8">
+            <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-1">
+                <h3 class="font-semibold text-gray-900 flex items-center gap-2 text-sm sm:text-base">
+                    <i class="fas fa-calendar-day text-blue-600"></i>
+                    Statistik Deteksi Hari Ini
+                </h3>
+                <span class="text-xs sm:text-sm text-gray-500" id="current-date"></span>
+            </div>
+
+            <!-- 2x2 di mobile, 4 kolom di sm ke atas -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
+                <div class="p-4 sm:p-6 text-center border-r border-gray-100">
+                    <p class="text-xs text-gray-500 mb-1">Sehat</p>
+                    <p id="today-healthy" class="text-2xl sm:text-3xl font-bold text-emerald-600">0</p>
+                    <p class="text-xs text-gray-400 mt-1">deteksi</p>
                 </div>
-                <div class="grid grid-cols-5 divide-x divide-gray-100">
-                    <div class="p-6 text-center">
-                        <p class="text-xs text-gray-500 mb-2">Total</p>
-                        <p id="total-detections" class="text-2xl font-bold text-gray-900">0</p>
-                    </div>
-                    <div class="p-6 text-center">
-                        <p class="text-xs text-gray-500 mb-2">Sehat</p>
-                        <p id="healthy-count" class="text-2xl font-bold text-emerald-600">0</p>
-                    </div>
-                    <div class="p-6 text-center">
-                        <p class="text-xs text-gray-500 mb-2">Cocci</p>
-                        <p id="coccidiosis-count" class="text-2xl font-bold text-amber-600">0</p>
-                    </div>
-                    <div class="p-6 text-center">
-                        <p class="text-xs text-gray-500 mb-2">ND</p>
-                        <p id="newcastle-count" class="text-2xl font-bold text-red-600">0</p>
-                    </div>
-                    <div class="p-6 text-center">
-                        <p class="text-xs text-gray-500 mb-2">Salmo</p>
-                        <p id="salmonella-count" class="text-2xl font-bold text-pink-600">0</p>
-                    </div>
+                <div class="p-4 sm:p-6 text-center">
+                    <p class="text-xs text-gray-500 mb-1">Coccidiosis</p>
+                    <p id="today-cocci" class="text-2xl sm:text-3xl font-bold text-amber-600">0</p>
+                    <p class="text-xs text-gray-400 mt-1">deteksi</p>
+                </div>
+                <div class="p-4 sm:p-6 text-center border-r border-gray-100">
+                    <p class="text-xs text-gray-500 mb-1">Newcastle</p>
+                    <p id="today-nd" class="text-2xl sm:text-3xl font-bold text-red-600">0</p>
+                    <p class="text-xs text-gray-400 mt-1">deteksi</p>
+                </div>
+                <div class="p-4 sm:p-6 text-center">
+                    <p class="text-xs text-gray-500 mb-1">Salmonella</p>
+                    <p id="today-salmo" class="text-2xl sm:text-3xl font-bold text-pink-600">0</p>
+                    <p class="text-xs text-gray-400 mt-1">deteksi</p>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-                <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-                    <h3 class="font-semibold text-gray-900 flex items-center gap-2">
-                        <i class="fas fa-history text-blue-600"></i>
-                        Deteksi Terbaru
-                    </h3>
-                    <a href="/riwayat" class="text-sm text-blue-600 hover:text-blue-700 font-medium">Lihat Semua →</a>
-                </div>
-                <div id="recent-list" class="p-4 space-y-2 max-h-64 overflow-y-auto">
-                    <p class="text-center text-gray-400 py-8 text-sm">Belum ada deteksi</p>
-                </div>
+            <div class="px-4 sm:px-6 py-3 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                <span class="text-xs sm:text-sm text-gray-600">
+                    <i class="fas fa-info-circle text-blue-500 mr-1"></i>
+                    Data akan direset otomatis setiap tengah malam
+                </span>
+                <span class="text-xs sm:text-sm font-semibold text-gray-700">
+                    Total Hari Ini: <span id="today-total" class="text-blue-600">0</span>
+                </span>
             </div>
         </div>
+
+        <!-- Deteksi Terbaru -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+            <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="font-semibold text-gray-900 flex items-center gap-2 text-sm sm:text-base">
+                    <i class="fas fa-history text-blue-600"></i>
+                    Deteksi Terbaru
+                </h3>
+                <a href="/riwayat" class="text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-medium">Lihat Semua →</a>
+            </div>
+            <div id="recent-list" class="p-3 sm:p-4 space-y-2 max-h-64 overflow-y-auto">
+                <p class="text-center text-gray-400 py-8 text-sm">Belum ada deteksi</p>
+            </div>
+        </div>
+
     </div>
 
-    <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4" onclick="closeModal()">
-        <button class="absolute top-4 right-4 text-white text-4xl hover:text-gray-300">&times;</button>
+    <!-- Modal -->
+    <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-3" onclick="closeModal()">
+        <button class="absolute top-3 right-4 text-white text-3xl sm:text-4xl hover:text-gray-300 leading-none">&times;</button>
         <img id="modal-image" src="" alt="Detail" class="max-w-full max-h-full rounded-lg shadow-2xl">
     </div>
 
     <script>
-        setInterval(updateDashboard, 2000);
-        setInterval(updateSnapshots, 3000);
-        updateDashboard();
-        updateSnapshots();
+        updateAll();
+        setInterval(updateAll, 2000);
 
-        function updateDashboard() {
-            fetch('/api/camera_status').then(res => res.json()).then(data => {
+        function updateAll() {
+            updateCameraStatus();
+            updateLatestDetection();
+            updateTodayStatistics();
+            updateRecentList();
+            updateSnapshots();
+        }
+
+        function updateCameraStatus() {
+            fetch('/api/camera_status').then(r => r.json()).then(data => {
                 const el = document.getElementById('camera-status');
                 el.textContent = data.status === 'online' ? 'Terhubung' : 'Terputus';
-                el.className = data.status === 'online' ? 'text-lg font-bold text-emerald-600' : 'text-lg font-bold text-red-600';
-            });
+                el.className = `text-xs sm:text-lg font-bold truncate mt-0.5 ${data.status === 'online' ? 'text-emerald-600' : 'text-red-600'}`;
+            }).catch(() => {});
+        }
 
-            fetch('/api/latest_detection').then(res => res.json()).then(data => {
+        function updateLatestDetection() {
+            fetch('/api/latest_detection').then(r => r.json()).then(data => {
                 document.getElementById('latest-disease').textContent = data.status;
                 document.getElementById('confidence-level').textContent = data.confidence + '%';
                 document.getElementById('last-update').textContent = data.timestamp.split(' ')[1];
-            });
+            }).catch(() => {});
+        }
 
-            fetch('/api/statistics').then(res => res.json()).then(data => {
-                document.getElementById('total-detections').textContent = data.total;
-                document.getElementById('healthy-count').textContent = data.by_disease['Sehat'] || 0;
-                document.getElementById('coccidiosis-count').textContent = data.by_disease['Coccidiosis'] || 0;
-                document.getElementById('newcastle-count').textContent = data.by_disease['Newcastle'] || 0;
-                document.getElementById('salmonella-count').textContent = data.by_disease['Salmonella'] || 0;
+        function updateTodayStatistics() {
+            fetch('/api/statistics_today').then(r => r.json()).then(data => {
+                document.getElementById('current-date').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                document.getElementById('today-healthy').textContent = data.today.Sehat || 0;
+                document.getElementById('today-cocci').textContent = data.today.Coccidiosis || 0;
+                document.getElementById('today-nd').textContent = data.today.Newcastle || 0;
+                document.getElementById('today-salmo').textContent = data.today.Salmonella || 0;
+                document.getElementById('today-total').textContent =
+                    (data.today.Sehat || 0) + (data.today.Coccidiosis || 0) +
+                    (data.today.Newcastle || 0) + (data.today.Salmonella || 0);
+            }).catch(() => {});
+        }
 
+        function updateRecentList() {
+            fetch('/api/statistics').then(r => r.json()).then(data => {
                 const list = document.getElementById('recent-list');
                 if (data.recent && data.recent.length > 0) {
                     const colors = {
@@ -217,53 +252,50 @@
                         'Salmonella': 'border-pink-500 bg-pink-50'
                     };
                     list.innerHTML = data.recent.map(item => `
-                        <div class="flex items-center justify-between p-3 rounded-lg border-l-4 ${colors[item.disease]}">
-                            <span class="font-medium text-gray-900 text-sm">${item.disease}</span>
-                            <div class="flex items-center gap-3">
-                                <span class="text-blue-600 font-semibold text-sm">${item.confidence}%</span>
+                        <div class="flex items-center justify-between p-2 sm:p-3 rounded-lg border-l-4 ${colors[item.disease] || 'border-gray-300 bg-gray-50'}">
+                            <span class="font-medium text-gray-900 text-xs sm:text-sm">${item.disease}</span>
+                            <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                                <span class="text-blue-600 font-semibold text-xs sm:text-sm">${item.confidence}%</span>
                                 <span class="text-gray-500 text-xs">${item.timestamp.split(' ')[1]}</span>
                             </div>
-                        </div>
-                    `).join('');
+                        </div>`).join('');
                 }
-            });
+            }).catch(() => {});
         }
 
         function updateSnapshots() {
-            fetch('/api/detection_snapshots').then(res => res.json()).then(data => {
+            fetch('/api/detection_snapshots').then(r => r.json()).then(data => {
                 const container = document.getElementById('snapshots-container');
                 if (data.snapshots && data.snapshots.length > 0) {
                     container.innerHTML = data.snapshots.map((snap, idx) => `
                         <div onclick="openModal('${snap.url}')" class="relative group cursor-pointer rounded-lg overflow-hidden aspect-square border-2 border-gray-200 hover:border-blue-500 transition">
                             <img src="${snap.url}?t=${Date.now()}" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                                <i class="fas fa-search-plus text-white text-xl"></i>
+                                <i class="fas fa-search-plus text-white"></i>
                             </div>
-                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 p-2">
-                                <p class="text-white text-xs font-medium">#${idx+1}</p>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 p-1">
+                                <p class="text-white text-xs font-medium">#${idx + 1}</p>
                             </div>
-                        </div>
-                    `).join('');
+                        </div>`).join('');
                 } else {
-                    container.innerHTML = '<div class="col-span-2 text-center py-12"><i class="fas fa-search text-gray-300 text-4xl mb-3"></i><p class="text-gray-400 text-sm">Menunggu deteksi...</p></div>';
+                    container.innerHTML = `<div class="col-span-3 lg:col-span-2 text-center py-8">
+                        <i class="fas fa-search text-gray-300 text-2xl mb-2"></i>
+                        <p class="text-gray-400 text-xs">Menunggu deteksi...</p></div>`;
                 }
-            });
+            }).catch(() => {});
         }
 
         function openModal(url) {
             document.getElementById('imageModal').classList.remove('hidden');
             document.getElementById('modal-image').src = url;
         }
-
         function closeModal() {
             document.getElementById('imageModal').classList.add('hidden');
         }
-
         function refreshStream() {
             const img = document.getElementById('video-stream');
             img.src = img.src.split('?')[0] + '?t=' + Date.now();
         }
-
         function toggleFullscreen() {
             const el = document.getElementById('live-view');
             if (!document.fullscreenElement) el.requestFullscreen();
