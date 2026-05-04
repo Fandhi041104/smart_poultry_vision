@@ -63,10 +63,10 @@
             <!-- Shortcut -->
             <div class="flex flex-wrap gap-2 mt-3 sm:mt-4">
                 <span class="text-xs text-gray-500 self-center">Cepat:</span>
-                <button onclick="setRange('today')" class="px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">Hari Ini</button>
-                <button onclick="setRange('week')"  class="px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">7 Hari Terakhir</button>
-                <button onclick="setRange('month')" class="px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">Bulan Ini</button>
-                <button onclick="setRange('all')"   class="px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">Semua Data</button>
+                <button onclick="setRange('today')" class="range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">Hari Ini</button>
+                <button onclick="setRange('week')"  class="range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">7 Hari Terakhir</button>
+                <button onclick="setRange('month')" class="range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">Bulan Ini</button>
+                <button onclick="setRange('all')"   class="range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">Semua Data</button>
             </div>
 
             <!-- Tombol Aksi -->
@@ -165,20 +165,29 @@
         function setRange(type) {
             const today = new Date();
             const fmt = d => d.toISOString().split('T')[0];
+
+            document.getElementById('filter-disease').value = 'all';
+            document.getElementById('filter-from').value = '';
+            document.getElementById('filter-to').value = '';
+
+            document.querySelectorAll('.range-btn').forEach(btn => {
+                btn.className = 'range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium';
+            });
+            event.target.className = 'range-btn px-3 py-1 text-xs bg-blue-600 text-white rounded-full transition font-medium';
+
             if (type === 'today') {
                 document.getElementById('filter-from').value = fmt(today);
                 document.getElementById('filter-to').value = fmt(today);
             } else if (type === 'week') {
-                const from = new Date(today); from.setDate(today.getDate() - 6);
+                const from = new Date(today);
+                from.setDate(today.getDate() - 6);
                 document.getElementById('filter-from').value = fmt(from);
                 document.getElementById('filter-to').value = fmt(today);
             } else if (type === 'month') {
                 document.getElementById('filter-from').value = fmt(new Date(today.getFullYear(), today.getMonth(), 1));
                 document.getElementById('filter-to').value = fmt(today);
-            } else {
-                document.getElementById('filter-from').value = '';
-                document.getElementById('filter-to').value = '';
             }
+
             applyFilters();
         }
 
