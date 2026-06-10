@@ -18,8 +18,8 @@
                 </a>
                 <div class="flex space-x-1 flex-shrink-0">
                     <a href="/dashboard" class="px-2 sm:px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition text-xs sm:text-sm">Dashboard</a>
-                    <a href="/riwayat" class="px-2 sm:px-4 py-2 rounded-lg text-white bg-white/20 font-medium text-xs sm:text-sm">Riwayat</a>
-                    <a href="/edukasi" class="px-2 sm:px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition text-xs sm:text-sm">Edukasi</a>
+                    <a href="/riwayat"   class="px-2 sm:px-4 py-2 rounded-lg text-white bg-white/20 font-medium text-xs sm:text-sm">Riwayat</a>
+                    <a href="/edukasi"   class="px-2 sm:px-4 py-2 rounded-lg text-white/80 hover:bg-white/10 font-medium transition text-xs sm:text-sm">Edukasi</a>
                 </div>
             </div>
         </div>
@@ -34,160 +34,257 @@
             </h1>
         </div>
 
-        <!-- Filter -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 mb-5 sm:mb-6">
-            <h3 class="font-semibold text-gray-700 mb-3 sm:mb-4 flex items-center gap-2 text-xs sm:text-sm uppercase tracking-wide">
-                <i class="fas fa-filter text-blue-500"></i> Filter Data
-            </h3>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                <div>
-                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Jenis Penyakit</label>
-                    <select id="filter-disease" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm">
-                        <option value="all">Semua Penyakit</option>
-                        <option value="Sehat">Sehat</option>
-                        <option value="Coccidiosis">Coccidiosis</option>
-                        <option value="Newcastle">Newcastle</option>
-                        <option value="Salmonella">Salmonella</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Dari Tanggal</label>
-                    <input type="date" id="filter-from" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Sampai Tanggal</label>
-                    <input type="date" id="filter-to" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm">
-                </div>
-            </div>
-
-            <!-- Shortcut -->
-            <div class="flex flex-wrap gap-2 mt-3 sm:mt-4">
-                <span class="text-xs text-gray-500 self-center">Cepat:</span>
-                <button onclick="setRange('today')" class="range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">Hari Ini</button>
-                <button onclick="setRange('week')"  class="range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">7 Hari Terakhir</button>
-                <button onclick="setRange('month')" class="range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">Bulan Ini</button>
-                <button onclick="setRange('all')"   class="range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">Semua Data</button>
-            </div>
-
-            <!-- Tombol Aksi -->
-            <div class="flex flex-wrap gap-2 sm:gap-3 mt-4 pt-4 border-t border-gray-100">
-                <button onclick="applyFilters()" class="flex-1 sm:flex-none px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-xs sm:text-sm">
-                    <i class="fas fa-search mr-1 sm:mr-2"></i>Cari
-                </button>
-                <button onclick="resetFilters()" class="flex-1 sm:flex-none px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium text-xs sm:text-sm">
-                    <i class="fas fa-redo mr-1 sm:mr-2"></i>Reset
-                </button>
-                <button onclick="exportToExcel()" class="w-full sm:w-auto sm:ml-auto px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition font-medium text-xs sm:text-sm">
-                    <i class="fas fa-file-excel mr-1 sm:mr-2"></i>Export Excel
-                </button>
-            </div>
+        <!-- ── Tab Navigation ── -->
+        <div class="flex gap-2 mb-6 border-b border-gray-200">
+            <button id="tab-btn-riwayat" onclick="switchTab('riwayat')"
+                    class="tab-btn px-4 sm:px-6 py-2.5 text-sm font-semibold border-b-2 border-blue-600 text-blue-600 transition">
+                <i class="fas fa-table mr-2"></i>Data Deteksi
+            </button>
+            <button id="tab-btn-galeri" onclick="switchTab('galeri')"
+                    class="tab-btn px-4 sm:px-6 py-2.5 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition">
+                <i class="fas fa-images mr-2"></i>Galeri Snapshot
+                <span id="galeri-count" class="ml-1 px-2 py-0.5 bg-gray-200 text-gray-600 rounded-full text-xs"></span>
+            </button>
         </div>
 
-        <!-- Info filter aktif -->
-        <div id="filter-info" class="hidden mb-3 px-3 sm:px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg text-xs sm:text-sm text-blue-700"></div>
+        <!-- ══════════════════════════════════════════
+             TAB 1 — DATA DETEKSI (tabel riwayat)
+        ══════════════════════════════════════════ -->
+        <div id="tab-riwayat">
 
-        <!-- ===== TABEL (desktop: sm ke atas) ===== -->
-        <div class="hidden sm:block bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <table class="w-full">
-                <thead class="bg-gray-50 border-b border-gray-200">
-                    <tr>
-                        <th class="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide w-12">No</th>
-                        <th class="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Penyakit</th>
-                        <th class="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Tingkat Keyakinan</th>
-                        <th class="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Tanggal</th>
-                        <th class="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Waktu</th>
-                    </tr>
-                </thead>
-                <tbody id="history-tbody-desktop" class="divide-y divide-gray-100">
-                    <tr>
-                        <td colspan="5" class="px-6 py-10 text-center">
+            <!-- Filter -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 mb-5 sm:mb-6">
+                <h3 class="font-semibold text-gray-700 mb-3 sm:mb-4 flex items-center gap-2 text-xs sm:text-sm uppercase tracking-wide">
+                    <i class="fas fa-filter text-blue-500"></i> Filter Data
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                    <div>
+                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Jenis Penyakit</label>
+                        <select id="filter-disease" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm">
+                            <option value="all">Semua Penyakit</option>
+                            <option value="Sehat">Sehat</option>
+                            <option value="Coccidiosis">Coccidiosis</option>
+                            <option value="Newcastle">Newcastle</option>
+                            <option value="Salmonella">Salmonella</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Dari Tanggal</label>
+                        <input type="date" id="filter-from" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Sampai Tanggal</label>
+                        <input type="date" id="filter-to" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm">
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mt-3 sm:mt-4">
+                    <span class="text-xs text-gray-500 self-center">Cepat:</span>
+                    <button onclick="setRange('today')" class="range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">Hari Ini</button>
+                    <button onclick="setRange('week')"  class="range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">7 Hari Terakhir</button>
+                    <button onclick="setRange('month')" class="range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">Bulan Ini</button>
+                    <button onclick="setRange('all')"   class="range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium">Semua Data</button>
+                </div>
+
+                <div class="flex flex-wrap gap-2 sm:gap-3 mt-4 pt-4 border-t border-gray-100">
+                    <button onclick="applyFilters()" class="flex-1 sm:flex-none px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-xs sm:text-sm">
+                        <i class="fas fa-search mr-1 sm:mr-2"></i>Cari
+                    </button>
+                    <button onclick="resetFilters()" class="flex-1 sm:flex-none px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium text-xs sm:text-sm">
+                        <i class="fas fa-redo mr-1 sm:mr-2"></i>Reset
+                    </button>
+                    <button onclick="exportToExcel()" class="w-full sm:w-auto sm:ml-auto px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition font-medium text-xs sm:text-sm">
+                        <i class="fas fa-file-excel mr-1 sm:mr-2"></i>Export Excel
+                    </button>
+                </div>
+            </div>
+
+            <div id="filter-info" class="hidden mb-3 px-3 sm:px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg text-xs sm:text-sm text-blue-700"></div>
+
+            <!-- Tabel desktop -->
+            <div class="hidden sm:block bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <table class="w-full">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th class="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide w-12">No</th>
+                            <th class="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Penyakit</th>
+                            <th class="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Tingkat Keyakinan</th>
+                            <th class="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Tanggal</th>
+                            <th class="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Waktu</th>
+                            <th class="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Bukti Foto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-tbody-desktop" class="divide-y divide-gray-100">
+                        <tr><td colspan="6" class="px-6 py-10 text-center">
                             <i class="fas fa-spinner fa-spin text-gray-300 text-3xl mb-3 block"></i>
                             <p class="text-gray-400 text-sm">Memuat data...</p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Card mobile -->
+            <div class="sm:hidden space-y-3" id="history-cards-mobile">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-center">
+                    <i class="fas fa-spinner fa-spin text-gray-300 text-2xl mb-2 block"></i>
+                    <p class="text-gray-400 text-sm">Memuat data...</p>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-4 sm:mt-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="text-xs sm:text-sm text-gray-500">
+                    Menampilkan <span class="font-semibold text-gray-700" id="showing-start">0</span>–<span class="font-semibold text-gray-700" id="showing-end">0</span>
+                    dari <span class="font-semibold text-gray-700" id="total-records">0</span> data
+                </div>
+                <div class="flex items-center gap-1 sm:gap-2">
+                    <button onclick="previousPage()" id="btn-prev"
+                            class="px-3 sm:px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition text-xs sm:text-sm">
+                        <i class="fas fa-chevron-left mr-1"></i>Sebelumnya
+                    </button>
+                    <div id="page-numbers" class="flex gap-1"></div>
+                    <button onclick="nextPage()" id="btn-next"
+                            class="px-3 sm:px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition text-xs sm:text-sm">
+                        Berikutnya<i class="fas fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <!-- ===== CARD LIST (mobile only: di bawah sm) ===== -->
-        <div class="sm:hidden space-y-3" id="history-cards-mobile">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-center">
-                <i class="fas fa-spinner fa-spin text-gray-300 text-2xl mb-2 block"></i>
-                <p class="text-gray-400 text-sm">Memuat data...</p>
+        <!-- ══════════════════════════════════════════
+             TAB 2 — GALERI SNAPSHOT
+        ══════════════════════════════════════════ -->
+        <div id="tab-galeri" class="hidden">
+
+            <!-- Info & filter galeri -->
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+                <div class="flex items-center gap-2 text-sm text-gray-600">
+                    <i class="fas fa-info-circle text-blue-500"></i>
+                    Semua snapshot hasil deteksi yang tersimpan di server
+                </div>
+                <div class="flex items-center gap-2">
+                    <label class="text-xs text-gray-500 font-medium">Tampilkan:</label>
+                    <select id="galeri-per-page" onchange="loadGaleri(1)"
+                            class="px-3 py-1.5 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500">
+                        <option value="12">12 per halaman</option>
+                        <option value="24">24 per halaman</option>
+                        <option value="48">48 per halaman</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Grid foto -->
+            <div id="galeri-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 mb-5">
+                <div class="col-span-full text-center py-12">
+                    <i class="fas fa-spinner fa-spin text-gray-300 text-3xl mb-3"></i>
+                    <p class="text-gray-400 text-sm">Memuat galeri...</p>
+                </div>
+            </div>
+
+            <!-- Pagination galeri -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="text-xs sm:text-sm text-gray-500" id="galeri-info">-</div>
+                <div class="flex items-center gap-1 sm:gap-2">
+                    <button onclick="galeriPrevPage()" id="galeri-btn-prev"
+                            class="px-3 sm:px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition text-xs sm:text-sm">
+                        <i class="fas fa-chevron-left mr-1"></i>Sebelumnya
+                    </button>
+                    <div id="galeri-page-numbers" class="flex gap-1"></div>
+                    <button onclick="galeriNextPage()" id="galeri-btn-next"
+                            class="px-3 sm:px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition text-xs sm:text-sm">
+                        Berikutnya<i class="fas fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Pagination -->
-        <div class="mt-4 sm:mt-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div class="text-xs sm:text-sm text-gray-500">
-                Menampilkan <span class="font-semibold text-gray-700" id="showing-start">0</span>–<span class="font-semibold text-gray-700" id="showing-end">0</span>
-                dari <span class="font-semibold text-gray-700" id="total-records">0</span> data
-            </div>
-            <div class="flex items-center gap-1 sm:gap-2">
-                <button onclick="previousPage()" id="btn-prev"
-                        class="px-3 sm:px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition text-xs sm:text-sm">
-                    <i class="fas fa-chevron-left mr-1"></i>Sebelumnya
-                </button>
-                <div id="page-numbers" class="flex gap-1"></div>
-                <button onclick="nextPage()" id="btn-next"
-                        class="px-3 sm:px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition text-xs sm:text-sm">
-                    Berikutnya<i class="fas fa-chevron-right ml-1"></i>
-                </button>
-            </div>
+    </div><!-- end container -->
+
+    <!-- Modal snapshot -->
+    <div id="snapshotModal" class="hidden fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+         onclick="closeSnapshotModal()">
+        <div class="relative w-full max-w-2xl" onclick="event.stopPropagation()">
+            <button onclick="closeSnapshotModal()"
+                    class="absolute -top-9 right-0 text-white/80 hover:text-white text-sm flex items-center gap-1 transition">
+                <i class="fas fa-times"></i> Tutup (ESC)
+            </button>
+            <img id="snapshot-image" src="" alt="Snapshot Deteksi"
+                 class="w-full rounded-xl shadow-2xl border-2 border-white/20 object-contain max-h-[80vh]">
+            <p id="snapshot-caption" class="text-center text-white/70 text-xs mt-3"></p>
         </div>
     </div>
 
     <script>
-        let historyData = [];
-        let filteredData = [];
-        let currentPage = 1;
+        // ══ STATE ══════════════════════════════════════════════
+        let historyData   = [];
+        let filteredData  = [];
+        let currentPage   = 1;
         const recordsPerPage = 10;
 
-        loadHistory();
+        let galeriCurrentPage = 1;
+        let galeriTotalPages  = 1;
 
+        // ══ INIT ═══════════════════════════════════════════════
+        loadHistory();
+        loadGaleri(1);
+
+        // ══ TAB SWITCHING ══════════════════════════════════════
+        function switchTab(tab) {
+            document.getElementById('tab-riwayat').classList.toggle('hidden', tab !== 'riwayat');
+            document.getElementById('tab-galeri').classList.toggle('hidden',  tab !== 'galeri');
+
+            document.getElementById('tab-btn-riwayat').className =
+                tab === 'riwayat'
+                ? 'tab-btn px-4 sm:px-6 py-2.5 text-sm font-semibold border-b-2 border-blue-600 text-blue-600 transition'
+                : 'tab-btn px-4 sm:px-6 py-2.5 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition';
+            document.getElementById('tab-btn-galeri').className =
+                tab === 'galeri'
+                ? 'tab-btn px-4 sm:px-6 py-2.5 text-sm font-semibold border-b-2 border-blue-600 text-blue-600 transition'
+                : 'tab-btn px-4 sm:px-6 py-2.5 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition';
+        }
+
+        // ══ TAB 1: RIWAYAT ════════════════════════════════════
         function loadHistory() {
             fetch('/api/history_all')
-                .then(res => res.json())
+                .then(r => r.json())
                 .then(data => {
-                    historyData = data;
+                    historyData  = data;
                     filteredData = data;
                     renderHistory();
                 })
                 .catch(() => {
-                    const errHtml = `<div class="text-center py-8">
-                        <i class="fas fa-exclamation-circle text-red-300 text-3xl mb-2 block"></i>
-                        <p class="text-gray-400 text-sm">Gagal memuat data</p></div>`;
-                    document.getElementById('history-tbody-desktop').innerHTML = `<tr><td colspan="5">${errHtml}</td></tr>`;
-                    document.getElementById('history-cards-mobile').innerHTML = `<div class="bg-white rounded-xl p-4">${errHtml}</div>`;
+                    const err = `<div class="text-center py-8"><i class="fas fa-exclamation-circle text-red-300 text-3xl mb-2 block"></i><p class="text-gray-400 text-sm">Gagal memuat data</p></div>`;
+                    document.getElementById('history-tbody-desktop').innerHTML = `<tr><td colspan="6">${err}</td></tr>`;
+                    document.getElementById('history-cards-mobile').innerHTML  = `<div class="bg-white rounded-xl p-4">${err}</div>`;
                 });
         }
 
         function setRange(type) {
             const today = new Date();
-            const fmt = d => d.toISOString().split('T')[0];
+            const fmt   = d => d.toISOString().split('T')[0];
 
+            // Reset semua filter dulu
             document.getElementById('filter-disease').value = 'all';
-            document.getElementById('filter-from').value = '';
-            document.getElementById('filter-to').value = '';
+            document.getElementById('filter-from').value    = '';
+            document.getElementById('filter-to').value      = '';
 
-            document.querySelectorAll('.range-btn').forEach(btn => {
-                btn.className = 'range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium';
+            // Highlight tombol aktif
+            document.querySelectorAll('.range-btn').forEach(b => {
+                b.className = 'range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium';
             });
             event.target.className = 'range-btn px-3 py-1 text-xs bg-blue-600 text-white rounded-full transition font-medium';
 
             if (type === 'today') {
                 document.getElementById('filter-from').value = fmt(today);
-                document.getElementById('filter-to').value = fmt(today);
+                document.getElementById('filter-to').value   = fmt(today);
             } else if (type === 'week') {
-                const from = new Date(today);
-                from.setDate(today.getDate() - 6);
+                const from = new Date(today); from.setDate(today.getDate()-6);
                 document.getElementById('filter-from').value = fmt(from);
-                document.getElementById('filter-to').value = fmt(today);
+                document.getElementById('filter-to').value   = fmt(today);
             } else if (type === 'month') {
                 document.getElementById('filter-from').value = fmt(new Date(today.getFullYear(), today.getMonth(), 1));
-                document.getElementById('filter-to').value = fmt(today);
+                document.getElementById('filter-to').value   = fmt(today);
             }
-
             applyFilters();
         }
 
@@ -200,7 +297,7 @@
                 const d = item.timestamp.split(' ')[0];
                 if (disease !== 'all' && item.disease !== disease) return false;
                 if (fromDate && d < fromDate) return false;
-                if (toDate  && d > toDate)   return false;
+                if (toDate   && d > toDate)   return false;
                 return true;
             });
             currentPage = 1;
@@ -209,11 +306,11 @@
         }
 
         function updateFilterInfo(disease, fromDate, toDate) {
-            const el = document.getElementById('filter-info');
+            const el    = document.getElementById('filter-info');
             const parts = [];
             if (disease !== 'all') parts.push(`Penyakit: <strong>${disease}</strong>`);
-            if (fromDate) parts.push(`Dari: <strong>${fromDate}</strong>`);
-            if (toDate)   parts.push(`Sampai: <strong>${toDate}</strong>`);
+            if (fromDate)          parts.push(`Dari: <strong>${fromDate}</strong>`);
+            if (toDate)            parts.push(`Sampai: <strong>${toDate}</strong>`);
             if (parts.length > 0) {
                 el.innerHTML = `<i class="fas fa-info-circle mr-1"></i>Filter aktif — ${parts.join(' &nbsp;|&nbsp; ')} &nbsp;(${filteredData.length} hasil)`;
                 el.classList.remove('hidden');
@@ -224,10 +321,13 @@
 
         function resetFilters() {
             document.getElementById('filter-disease').value = 'all';
-            document.getElementById('filter-from').value = '';
-            document.getElementById('filter-to').value = '';
+            document.getElementById('filter-from').value    = '';
+            document.getElementById('filter-to').value      = '';
+            document.querySelectorAll('.range-btn').forEach(b => {
+                b.className = 'range-btn px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-gray-600 rounded-full transition font-medium';
+            });
             filteredData = historyData;
-            currentPage = 1;
+            currentPage  = 1;
             document.getElementById('filter-info').classList.add('hidden');
             renderHistory();
         }
@@ -242,33 +342,37 @@
         function renderHistory() {
             const total      = filteredData.length;
             const totalPages = Math.ceil(total / recordsPerPage);
-            const startIdx   = (currentPage - 1) * recordsPerPage;
+            const startIdx   = (currentPage-1) * recordsPerPage;
             const endIdx     = Math.min(startIdx + recordsPerPage, total);
             const pageData   = filteredData.slice(startIdx, endIdx);
 
-            document.getElementById('total-records').textContent  = total;
-            document.getElementById('showing-start').textContent  = total > 0 ? startIdx + 1 : 0;
-            document.getElementById('showing-end').textContent    = endIdx;
+            document.getElementById('total-records').textContent = total;
+            document.getElementById('showing-start').textContent = total > 0 ? startIdx+1 : 0;
+            document.getElementById('showing-end').textContent   = endIdx;
             document.getElementById('btn-prev').disabled = currentPage === 1;
             document.getElementById('btn-next').disabled = currentPage === totalPages || total === 0;
 
             if (total === 0) {
-                const empty = `<div class="text-center py-10">
-                    <i class="fas fa-inbox text-gray-300 text-3xl mb-2 block"></i>
-                    <p class="text-gray-400 text-sm">Tidak ada data yang sesuai</p></div>`;
-                document.getElementById('history-tbody-desktop').innerHTML = `<tr><td colspan="5">${empty}</td></tr>`;
+                const empty = `<div class="text-center py-10"><i class="fas fa-inbox text-gray-300 text-3xl mb-2 block"></i><p class="text-gray-400 text-sm">Tidak ada data yang sesuai</p></div>`;
+                document.getElementById('history-tbody-desktop').innerHTML = `<tr><td colspan="6">${empty}</td></tr>`;
                 document.getElementById('history-cards-mobile').innerHTML  = `<div class="bg-white rounded-xl p-4">${empty}</div>`;
                 renderPageNumbers(0);
                 return;
             }
 
-            // ---- Render tabel desktop ----
+            // Tabel desktop
             document.getElementById('history-tbody-desktop').innerHTML = pageData.map((item, idx) => {
                 const [date, time] = item.timestamp.split(' ');
+                const fotoBtn = item.snapshot_url
+                    ? `<button onclick="openSnapshotModal('${item.snapshot_url}','${item.disease} • ${item.timestamp}')"
+                               class="flex items-center gap-1 px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg text-xs font-medium transition">
+                           <i class="fas fa-image"></i> Lihat Foto
+                       </button>`
+                    : `<span class="text-xs text-gray-400 italic">Tidak ada</span>`;
                 return `<tr class="hover:bg-gray-50 transition">
-                    <td class="px-4 sm:px-6 py-3 sm:py-4 text-sm text-gray-500">${startIdx + idx + 1}</td>
+                    <td class="px-4 sm:px-6 py-3 sm:py-4 text-sm text-gray-500">${startIdx+idx+1}</td>
                     <td class="px-4 sm:px-6 py-3 sm:py-4">
-                        <span class="px-2 sm:px-3 py-1 rounded-full text-xs font-semibold ${badge[item.disease] || 'bg-gray-100 text-gray-800'}">${item.disease}</span>
+                        <span class="px-2 sm:px-3 py-1 rounded-full text-xs font-semibold ${badge[item.disease]||'bg-gray-100 text-gray-800'}">${item.disease}</span>
                     </td>
                     <td class="px-4 sm:px-6 py-3 sm:py-4">
                         <div class="flex items-center gap-2 sm:gap-3">
@@ -280,18 +384,24 @@
                     </td>
                     <td class="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-600 whitespace-nowrap">${date}</td>
                     <td class="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-600 whitespace-nowrap">${time}</td>
+                    <td class="px-4 sm:px-6 py-3 sm:py-4">${fotoBtn}</td>
                 </tr>`;
             }).join('');
 
-            // ---- Render card mobile ----
+            // Card mobile
             document.getElementById('history-cards-mobile').innerHTML = pageData.map((item, idx) => {
                 const [date, time] = item.timestamp.split(' ');
-                const badgeClass = badge[item.disease] || 'bg-gray-100 text-gray-800';
+                const fotoBtn = item.snapshot_url
+                    ? `<button onclick="openSnapshotModal('${item.snapshot_url}','${item.disease} • ${item.timestamp}')"
+                               class="mt-2 w-full flex items-center justify-center gap-1 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg text-xs font-medium transition">
+                           <i class="fas fa-image mr-1"></i>Lihat Bukti Foto
+                       </button>`
+                    : '';
                 return `<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
                     <div class="flex items-center justify-between mb-2">
                         <div class="flex items-center gap-2">
-                            <span class="text-xs text-gray-400 font-medium">#${startIdx + idx + 1}</span>
-                            <span class="px-2 py-0.5 rounded-full text-xs font-semibold ${badgeClass}">${item.disease}</span>
+                            <span class="text-xs text-gray-400 font-medium">#${startIdx+idx+1}</span>
+                            <span class="px-2 py-0.5 rounded-full text-xs font-semibold ${badge[item.disease]||'bg-gray-100 text-gray-800'}">${item.disease}</span>
                         </div>
                         <span class="text-xs text-gray-500">${date}</span>
                     </div>
@@ -302,6 +412,7 @@
                         <span class="text-xs font-semibold text-gray-700 w-9 text-right">${Math.round(item.confidence)}%</span>
                     </div>
                     <p class="text-xs text-gray-400 mt-2"><i class="fas fa-clock mr-1"></i>${time}</p>
+                    ${fotoBtn}
                 </div>`;
             }).join('');
 
@@ -313,13 +424,13 @@
             container.innerHTML = '';
             if (totalPages <= 1) return;
             const max = 3;
-            let start = Math.max(1, currentPage - 1);
-            let end   = Math.min(totalPages, start + max - 1);
-            if (end - start < max - 1) start = Math.max(1, end - max + 1);
+            let start = Math.max(1, currentPage-1);
+            let end   = Math.min(totalPages, start+max-1);
+            if (end-start < max-1) start = Math.max(1, end-max+1);
             for (let i = start; i <= end; i++) {
                 const btn = document.createElement('button');
                 btn.textContent = i;
-                btn.className = i === currentPage
+                btn.className   = i === currentPage
                     ? 'px-2 sm:px-3 py-2 bg-blue-600 text-white rounded-lg text-xs sm:text-sm font-semibold'
                     : 'px-2 sm:px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition text-xs sm:text-sm';
                 btn.onclick = () => { currentPage = i; renderHistory(); };
@@ -335,14 +446,118 @@
             const disease  = document.getElementById('filter-disease').value;
             const fromDate = document.getElementById('filter-from').value;
             const toDate   = document.getElementById('filter-to').value;
-
-            const params = new URLSearchParams();
+            const params   = new URLSearchParams();
             if (disease !== 'all') params.append('disease', disease);
             if (fromDate) params.append('from', fromDate);
             if (toDate)   params.append('to', toDate);
-
             window.location.href = '/api/export_history?' + params.toString();
         }
+
+        // ══ TAB 2: GALERI ════════════════════════════════════
+        function loadGaleri(page) {
+            galeriCurrentPage = page;
+            const perPage = parseInt(document.getElementById('galeri-per-page').value) || 12;
+
+            document.getElementById('galeri-grid').innerHTML = `
+                <div class="col-span-full text-center py-12">
+                    <i class="fas fa-spinner fa-spin text-gray-300 text-3xl mb-3"></i>
+                    <p class="text-gray-400 text-sm">Memuat galeri...</p>
+                </div>`;
+
+            fetch(`/api/snapshots/all?page=${page}&per_page=${perPage}`)
+                .then(r => r.json())
+                .then(data => {
+                    galeriTotalPages = data.total_pages || 1;
+
+                    // Update badge count di tab
+                    if (page === 1) {
+                        const badge = document.getElementById('galeri-count');
+                        badge.textContent = data.total || 0;
+                    }
+
+                    // Update info
+                    const start = (page-1)*perPage + 1;
+                    const end   = Math.min(page*perPage, data.total);
+                    document.getElementById('galeri-info').textContent =
+                        data.total > 0
+                        ? `Menampilkan ${start}–${end} dari ${data.total} snapshot`
+                        : 'Belum ada snapshot';
+
+                    // Pagination
+                    document.getElementById('galeri-btn-prev').disabled = page === 1;
+                    document.getElementById('galeri-btn-next').disabled = page === galeriTotalPages || data.total === 0;
+                    renderGaleriPageNumbers(galeriTotalPages);
+
+                    if (!data.snapshots || data.snapshots.length === 0) {
+                        document.getElementById('galeri-grid').innerHTML = `
+                            <div class="col-span-full text-center py-12">
+                                <i class="fas fa-images text-gray-300 text-4xl mb-3"></i>
+                                <p class="text-gray-400 text-sm">Belum ada snapshot tersimpan</p>
+                            </div>`;
+                        return;
+                    }
+
+                    document.getElementById('galeri-grid').innerHTML = data.snapshots.map(snap => `
+                        <div onclick="openSnapshotModal('${snap.url}','${snap.timestamp}')"
+                             class="group relative cursor-pointer bg-white rounded-xl overflow-hidden border-2 border-gray-200 hover:border-blue-500 transition shadow-sm hover:shadow-md">
+                            <div class="aspect-square overflow-hidden bg-gray-100">
+                                <img src="${snap.url}" alt="${snap.filename}"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                                     loading="lazy"
+                                     onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-full text-gray-400\'><i class=\'fas fa-image-slash text-2xl\'></i></div>'">
+                            </div>
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                                <i class="fas fa-search-plus text-white text-2xl"></i>
+                            </div>
+                            <div class="p-2">
+                                <p class="text-xs text-gray-600 font-medium truncate">${snap.timestamp || snap.filename}</p>
+                            </div>
+                        </div>`).join('');
+                })
+                .catch(() => {
+                    document.getElementById('galeri-grid').innerHTML = `
+                        <div class="col-span-full text-center py-12">
+                            <i class="fas fa-exclamation-circle text-red-300 text-3xl mb-3"></i>
+                            <p class="text-gray-400 text-sm">Gagal memuat galeri</p>
+                        </div>`;
+                });
+        }
+
+        function renderGaleriPageNumbers(totalPages) {
+            const container = document.getElementById('galeri-page-numbers');
+            container.innerHTML = '';
+            if (totalPages <= 1) return;
+            const max   = 3;
+            let start   = Math.max(1, galeriCurrentPage-1);
+            let end     = Math.min(totalPages, start+max-1);
+            if (end-start < max-1) start = Math.max(1, end-max+1);
+            for (let i = start; i <= end; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.className   = i === galeriCurrentPage
+                    ? 'px-2 sm:px-3 py-2 bg-blue-600 text-white rounded-lg text-xs sm:text-sm font-semibold'
+                    : 'px-2 sm:px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition text-xs sm:text-sm';
+                btn.onclick = () => loadGaleri(i);
+                container.appendChild(btn);
+            }
+        }
+
+        function galeriPrevPage() { if (galeriCurrentPage > 1) loadGaleri(galeriCurrentPage-1); }
+        function galeriNextPage() { if (galeriCurrentPage < galeriTotalPages) loadGaleri(galeriCurrentPage+1); }
+
+        // ══ MODAL SNAPSHOT ════════════════════════════════════
+        function openSnapshotModal(url, caption) {
+            document.getElementById('snapshot-image').src   = url;
+            document.getElementById('snapshot-caption').textContent = caption || '';
+            document.getElementById('snapshotModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeSnapshotModal() {
+            document.getElementById('snapshotModal').classList.add('hidden');
+            document.getElementById('snapshot-image').src = '';
+            document.body.style.overflow = ''; 
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSnapshotModal(); });
     </script>
-</body>
-</html>
+</body> 
+</html> 
