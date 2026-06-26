@@ -31,452 +31,512 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
 
-        <div class="mb-5 sm:mb-8">
+        <div class="mb-5 sm:mb-6">
             <h1 class="text-xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2 sm:gap-3">
-                <i class="fas fa-tachometer-alt text-blue-600"></i>
-                Dashboard Monitoring
+                <i class="fas fa-tachometer-alt text-blue-600"></i> Dashboard Monitoring
             </h1>
         </div>
 
-        <!-- Status Cards -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-5 sm:mb-8">
-            <div class="bg-white rounded-xl shadow-sm p-3 sm:p-6 border border-gray-100">
-                <div class="flex items-center gap-2 sm:gap-4">
-                    <div class="w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-video text-white text-xs sm:text-xl"></i>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-xs text-gray-500 font-medium leading-tight">Status Kamera</p>
-                        <p id="camera-status" class="text-xs sm:text-lg font-bold text-gray-900 truncate mt-0.5">Memeriksa...</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm p-3 sm:p-6 border border-gray-100">
-                <div class="flex items-center gap-2 sm:gap-4">
-                    <div class="w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-bullseye text-white text-xs sm:text-xl"></i>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-xs text-gray-500 font-medium leading-tight">Deteksi Terbaru</p>
-                        <p id="latest-disease" class="text-xs sm:text-lg font-bold text-gray-900 truncate mt-0.5">-</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm p-3 sm:p-6 border border-gray-100">
-                <div class="flex items-center gap-2 sm:gap-4">
-                    <div class="w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-percent text-white text-xs sm:text-xl"></i>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-xs text-gray-500 font-medium leading-tight">Tingkat Keyakinan</p>
-                        <p id="confidence-level" class="text-xs sm:text-lg font-bold text-gray-900 mt-0.5">0%</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm p-3 sm:p-6 border border-gray-100">
-                <div class="flex items-center gap-2 sm:gap-4">
-                    <div class="w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-clock text-white text-xs sm:text-xl"></i>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-xs text-gray-500 font-medium leading-tight">Pembaruan Terakhir</p>
-                        <p id="last-update" class="text-xs sm:text-lg font-bold text-gray-900 mt-0.5">-</p>
-                    </div>
-                </div>
-            </div>
+        <!-- Tab Navigation -->
+        <div class="flex gap-2 mb-6 border-b border-gray-200 overflow-x-auto">
+            <button id="tab-btn-live" onclick="switchTab('live')"
+                    class="tab-btn px-4 sm:px-6 py-2.5 text-sm font-semibold border-b-2 border-blue-600 text-blue-600 transition whitespace-nowrap">
+                <i class="fas fa-satellite-dish mr-2"></i>Live Monitoring
+            </button>
+            <button id="tab-btn-rekaman" onclick="switchTab('rekaman')"
+                    class="tab-btn px-4 sm:px-6 py-2.5 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition whitespace-nowrap">
+                <i class="fas fa-film mr-2"></i>Rekaman
+                <span id="rec-count-badge" class="ml-1 px-2 py-0.5 bg-gray-200 text-gray-600 rounded-full text-xs">0</span>
+            </button>
         </div>
 
-        <!-- Live Stream & Snapshots -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-5 sm:mb-8">
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
-                    <!-- Header stream dengan tombol rekam -->
-                    <div class="bg-gradient-to-r from-purple-600 to-blue-600 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
-                        <h3 class="text-white font-semibold flex items-center gap-2 text-sm sm:text-base">
-                            <i class="fas fa-video"></i>
-                            Streaming Langsung
-                        </h3>
-                        <div class="flex items-center gap-2">
-                            <!-- Status rekaman -->
-                            <div id="rec-status" class="hidden items-center gap-1 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
-                                <span class="w-2 h-2 bg-white rounded-full rec-pulse"></span>
-                                <span id="rec-timer">00:00:00</span>
-                            </div>
-                            <!-- Tombol mulai rekam -->
-                            <button id="btn-start-rec" onclick="startRecording()"
-                                    class="flex items-center gap-1 px-2 sm:px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs font-medium transition">
-                                <i class="fas fa-circle text-xs"></i>
-                                <span class="hidden sm:inline">Mulai Rekam</span>
-                            </button>
-                            <!-- Tombol stop rekam -->
-                            <button id="btn-stop-rec" onclick="stopRecording()"
-                                    class="hidden flex items-center gap-1 px-2 sm:px-3 py-1.5 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-xs font-medium transition">
-                                <i class="fas fa-stop text-xs"></i>
-                                <span class="hidden sm:inline">Stop</span>
-                            </button>
-                            <!-- Tombol daftar rekaman -->
-                            <button onclick="openRecordingList()"
-                                    class="flex items-center gap-1 px-2 sm:px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white rounded-lg text-xs font-medium transition">
-                                <i class="fas fa-folder text-xs"></i>
-                                <span class="hidden sm:inline">Rekaman</span>
-                            </button>
-                            <button onclick="refreshStream()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition">
-                                <i class="fas fa-sync-alt text-xs sm:text-sm"></i>
-                            </button>
-                            <button onclick="toggleFullscreen()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition">
-                                <i class="fas fa-expand text-xs sm:text-sm"></i>
-                            </button>
+        <!-- ══════════════════════════════════════════
+             TAB 1 — LIVE MONITORING
+        ══════════════════════════════════════════ -->
+        <div id="tab-live">
+
+            <!-- Status Cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-5 sm:mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-3 sm:p-6 border border-gray-100">
+                    <div class="flex items-center gap-2 sm:gap-4">
+                        <div class="w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-video text-white text-xs sm:text-xl"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs text-gray-500 font-medium leading-tight">Status Kamera</p>
+                            <p id="camera-status" class="text-xs sm:text-lg font-bold text-gray-900 truncate mt-0.5">Memeriksa...</p>
                         </div>
                     </div>
-                    <div class="relative bg-black aspect-video" id="live-view">
-                        <img id="video-stream" src="{{ url_for('video_feed') }}" alt="Live Stream" class="w-full h-full object-contain">
-                        <span class="absolute top-2 left-2 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs font-bold flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
-                            LANGSUNG
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-3 sm:p-6 border border-gray-100">
+                    <div class="flex items-center gap-2 sm:gap-4">
+                        <div class="w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-bullseye text-white text-xs sm:text-xl"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs text-gray-500 font-medium leading-tight">Deteksi Terbaru</p>
+                            <p id="latest-disease" class="text-xs sm:text-lg font-bold text-gray-900 truncate mt-0.5">-</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-3 sm:p-6 border border-gray-100">
+                    <div class="flex items-center gap-2 sm:gap-4">
+                        <div class="w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-percent text-white text-xs sm:text-xl"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs text-gray-500 font-medium leading-tight">Tingkat Keyakinan</p>
+                            <p id="confidence-level" class="text-xs sm:text-lg font-bold text-gray-900 mt-0.5">0%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-3 sm:p-6 border border-gray-100">
+                    <div class="flex items-center gap-2 sm:gap-4">
+                        <div class="w-9 h-9 sm:w-14 sm:h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-clock text-white text-xs sm:text-xl"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs text-gray-500 font-medium leading-tight">Pembaruan Terakhir</p>
+                            <p id="last-update" class="text-xs sm:text-lg font-bold text-gray-900 mt-0.5">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2 Kamera berdampingan + daftar deteksi -->
+            <!-- items-start mencegah card stream ikut memanjang menyamai tinggi panel daftar deteksi -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-5 sm:mb-8 items-start">
+
+                <!-- Kamera 1 -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+                    <div class="bg-gradient-to-r from-purple-600 to-blue-600 px-3 py-2 flex items-center justify-between">
+                        <h3 class="text-white font-semibold flex items-center gap-1.5 text-xs sm:text-sm">
+                            <i class="fas fa-video"></i> Kamera 1
+                            <span id="cam1-dot" class="w-2 h-2 rounded-full bg-gray-300 ml-1"></span>
+                        </h3>
+                    </div>
+                    <div class="relative bg-black" style="aspect-ratio:16/10" id="live-view-1">
+                        <img id="video-stream-1" src="/video_feed/1" alt="Kamera 1" class="w-full h-full object-contain">
+                        <span class="absolute top-1.5 left-1.5 bg-red-500 text-white px-1.5 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>LIVE
                         </span>
+                        <button onclick="toggleFullscreen('live-view-1')" class="absolute top-1.5 right-1.5 w-6 h-6 bg-white/20 hover:bg-white/30 rounded flex items-center justify-center text-white">
+                            <i class="fas fa-expand text-[10px]"></i>
+                        </button>
+                    </div>
+                    <div class="px-3 py-2.5 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-2">
+                        <button id="btn-rec1" onclick="toggleRecording(1)"
+                                class="flex items-center gap-1.5 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs font-semibold transition flex-shrink-0">
+                            <i id="btn-rec1-icon" class="fas fa-circle text-[10px]"></i>
+                            <span id="btn-rec1-text">Mulai Rekam</span>
+                        </button>
+                        <span id="rec1-status" class="text-xs text-gray-400">Belum merekam</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="lg:col-span-1">
+                <!-- Kamera 2 -->
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
-                    <div class="bg-gradient-to-r from-purple-600 to-blue-600 px-4 sm:px-6 py-3 sm:py-4">
-                        <h3 class="text-white font-semibold flex items-center gap-2 text-sm sm:text-base">
-                            <i class="fas fa-camera"></i>
-                            Hasil Deteksi
+                    <div class="bg-gradient-to-r from-purple-600 to-blue-600 px-3 py-2 flex items-center justify-between">
+                        <h3 class="text-white font-semibold flex items-center gap-1.5 text-xs sm:text-sm">
+                            <i class="fas fa-video"></i> Kamera 2
+                            <span id="cam2-dot" class="w-2 h-2 rounded-full bg-gray-300 ml-1"></span>
                         </h3>
-                        <p class="text-white/80 text-xs mt-0.5">Klik untuk memperbesar</p>
                     </div>
-                    <div id="snapshots-container" class="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-2 gap-2 p-3 max-h-48 sm:max-h-64 lg:max-h-[420px] overflow-y-auto">
-                        <div class="col-span-3 lg:col-span-2 text-center py-8">
-                            <i class="fas fa-search text-gray-300 text-2xl sm:text-3xl mb-2"></i>
-                            <p class="text-gray-400 text-xs">Menunggu deteksi...</p>
+                    <div class="relative bg-black" style="aspect-ratio:16/10" id="live-view-2">
+                        <img id="video-stream-2" src="/video_feed/2" alt="Kamera 2" class="w-full h-full object-contain">
+                        <span class="absolute top-1.5 left-1.5 bg-red-500 text-white px-1.5 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>LIVE
+                        </span>
+                        <button onclick="toggleFullscreen('live-view-2')" class="absolute top-1.5 right-1.5 w-6 h-6 bg-white/20 hover:bg-white/30 rounded flex items-center justify-center text-white">
+                            <i class="fas fa-expand text-[10px]"></i>
+                        </button>
+                    </div>
+                    <div class="px-3 py-2.5 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-2">
+                        <button id="btn-rec2" onclick="toggleRecording(2)"
+                                class="flex items-center gap-1.5 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs font-semibold transition flex-shrink-0">
+                            <i id="btn-rec2-icon" class="fas fa-circle text-[10px]"></i>
+                            <span id="btn-rec2-text">Mulai Rekam</span>
+                        </button>
+                        <span id="rec2-status" class="text-xs text-gray-400">Belum merekam</span>
+                    </div>
+                </div>
+
+                <!-- Daftar deteksi gabungan -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="bg-gradient-to-r from-purple-600 to-blue-600 px-4 py-3 flex items-center justify-between">
+                        <div>
+                            <h3 class="text-white font-semibold flex items-center gap-2 text-sm">
+                                <i class="fas fa-list-ul"></i> Deteksi Real-Time
+                            </h3>
+                            <p class="text-white/80 text-xs mt-0.5">Gabungan Kam 1 &amp; 2</p>
+                        </div>
+                        <span id="snap-count" class="bg-white/20 text-white text-xs font-bold px-2 py-1 rounded-full">0</span>
+                    </div>
+                    <div id="snapshots-list" class="overflow-y-auto divide-y divide-gray-100" style="max-height:420px">
+                        <div class="text-center py-10 px-4">
+                            <i class="fas fa-satellite-dish text-gray-300 text-2xl mb-2"></i>
+                            <p class="text-gray-400 text-xs">Menunggu deteksi kamera...</p>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Statistik Hari Ini -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 mb-5 sm:mb-8">
+                <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-1">
+                    <h3 class="font-semibold text-gray-900 flex items-center gap-2 text-sm sm:text-base">
+                        <i class="fas fa-calendar-day text-blue-600"></i> Statistik Deteksi Hari Ini
+                    </h3>
+                    <span class="text-xs sm:text-sm text-gray-500" id="current-date"></span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
+                    <div class="p-4 sm:p-6 text-center border-r border-gray-100">
+                        <p class="text-xs text-gray-500 mb-1">Sehat</p>
+                        <p id="today-healthy" class="text-2xl sm:text-3xl font-bold text-emerald-600">0</p>
+                        <p class="text-xs text-gray-400 mt-1">deteksi</p>
+                    </div>
+                    <div class="p-4 sm:p-6 text-center">
+                        <p class="text-xs text-gray-500 mb-1">Coccidiosis</p>
+                        <p id="today-cocci" class="text-2xl sm:text-3xl font-bold text-amber-600">0</p>
+                        <p class="text-xs text-gray-400 mt-1">deteksi</p>
+                    </div>
+                    <div class="p-4 sm:p-6 text-center border-r border-gray-100">
+                        <p class="text-xs text-gray-500 mb-1">Newcastle</p>
+                        <p id="today-nd" class="text-2xl sm:text-3xl font-bold text-red-600">0</p>
+                        <p class="text-xs text-gray-400 mt-1">deteksi</p>
+                    </div>
+                    <div class="p-4 sm:p-6 text-center">
+                        <p class="text-xs text-gray-500 mb-1">Salmonella</p>
+                        <p id="today-salmo" class="text-2xl sm:text-3xl font-bold text-pink-600">0</p>
+                        <p class="text-xs text-gray-400 mt-1">deteksi</p>
+                    </div>
+                </div>
+                <div class="px-4 sm:px-6 py-3 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                    <span class="text-xs sm:text-sm text-gray-600">
+                        <i class="fas fa-info-circle text-blue-500 mr-1"></i>Data akan direset otomatis setiap tengah malam
+                    </span>
+                    <span class="text-xs sm:text-sm font-semibold text-gray-700">
+                        Total Hari Ini: <span id="today-total" class="text-blue-600">0</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Deteksi Terbaru (dari DB) -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+                <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 flex items-center justify-between">
+                    <h3 class="font-semibold text-gray-900 flex items-center gap-2 text-sm sm:text-base">
+                        <i class="fas fa-history text-blue-600"></i> Deteksi Terbaru
+                    </h3>
+                    <a href="/riwayat" class="text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-medium">Lihat Semua →</a>
+                </div>
+                <div id="recent-list" class="p-3 sm:p-4 space-y-2 max-h-64 overflow-y-auto">
+                    <p class="text-center text-gray-400 py-8 text-sm">Belum ada deteksi</p>
+                </div>
+            </div>
         </div>
 
-        <!-- Statistik Hari Ini -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 mb-5 sm:mb-8">
-            <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-1">
-                <h3 class="font-semibold text-gray-900 flex items-center gap-2 text-sm sm:text-base">
-                    <i class="fas fa-calendar-day text-blue-600"></i>
-                    Statistik Deteksi Hari Ini
-                </h3>
-                <span class="text-xs sm:text-sm text-gray-500" id="current-date"></span>
+        <!-- ══════════════════════════════════════════
+             TAB 2 — REKAMAN
+        ══════════════════════════════════════════ -->
+        <div id="tab-rekaman" class="hidden">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-5">
+                <p class="text-sm text-gray-600">
+                    <i class="fas fa-info-circle text-blue-500 mr-1"></i>Semua video hasil rekaman dari Kamera 1 &amp; 2 yang tersimpan di server
+                </p>
+                <button onclick="loadRecordingList()" class="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
-                <div class="p-4 sm:p-6 text-center border-r border-gray-100">
-                    <p class="text-xs text-gray-500 mb-1">Sehat</p>
-                    <p id="today-healthy" class="text-2xl sm:text-3xl font-bold text-emerald-600">0</p>
-                    <p class="text-xs text-gray-400 mt-1">deteksi</p>
-                </div>
-                <div class="p-4 sm:p-6 text-center">
-                    <p class="text-xs text-gray-500 mb-1">Coccidiosis</p>
-                    <p id="today-cocci" class="text-2xl sm:text-3xl font-bold text-amber-600">0</p>
-                    <p class="text-xs text-gray-400 mt-1">deteksi</p>
-                </div>
-                <div class="p-4 sm:p-6 text-center border-r border-gray-100">
-                    <p class="text-xs text-gray-500 mb-1">Newcastle</p>
-                    <p id="today-nd" class="text-2xl sm:text-3xl font-bold text-red-600">0</p>
-                    <p class="text-xs text-gray-400 mt-1">deteksi</p>
-                </div>
-                <div class="p-4 sm:p-6 text-center">
-                    <p class="text-xs text-gray-500 mb-1">Salmonella</p>
-                    <p id="today-salmo" class="text-2xl sm:text-3xl font-bold text-pink-600">0</p>
-                    <p class="text-xs text-gray-400 mt-1">deteksi</p>
-                </div>
-            </div>
-            <div class="px-4 sm:px-6 py-3 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                <span class="text-xs sm:text-sm text-gray-600">
-                    <i class="fas fa-info-circle text-blue-500 mr-1"></i>
-                    Data akan direset otomatis setiap tengah malam
-                </span>
-                <span class="text-xs sm:text-sm font-semibold text-gray-700">
-                    Total Hari Ini: <span id="today-total" class="text-blue-600">0</span>
-                </span>
-            </div>
-        </div>
-
-        <!-- Deteksi Terbaru -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-            <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 flex items-center justify-between">
-                <h3 class="font-semibold text-gray-900 flex items-center gap-2 text-sm sm:text-base">
-                    <i class="fas fa-history text-blue-600"></i>
-                    Deteksi Terbaru
-                </h3>
-                <a href="/riwayat" class="text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-medium">Lihat Semua →</a>
-            </div>
-            <div id="recent-list" class="p-3 sm:p-4 space-y-2 max-h-64 overflow-y-auto">
-                <p class="text-center text-gray-400 py-8 text-sm">Belum ada deteksi</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal snapshot -->
-    <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-3" onclick="closeModal()">
-        <button class="absolute top-3 right-4 text-white text-3xl sm:text-4xl hover:text-gray-300 leading-none">&times;</button>
-        <img id="modal-image" src="" alt="Detail" class="max-w-full max-h-full rounded-lg shadow-2xl">
-    </div>
-
-    <!-- Modal daftar rekaman -->
-    <div id="recordingModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[80vh] flex flex-col">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                <h3 class="font-bold text-gray-900 flex items-center gap-2">
-                    <i class="fas fa-folder-open text-blue-600"></i>
-                    Daftar Rekaman
-                </h3>
-                <button onclick="closeRecordingList()" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
-            </div>
-            <div id="recording-list-content" class="flex-1 overflow-y-auto p-4 space-y-3">
-                <div class="text-center py-8">
-                    <i class="fas fa-spinner fa-spin text-gray-300 text-3xl mb-2"></i>
+            <div id="recording-list-content" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="col-span-full text-center py-12">
+                    <i class="fas fa-spinner fa-spin text-gray-300 text-3xl mb-3"></i>
                     <p class="text-gray-400 text-sm">Memuat daftar rekaman...</p>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Toast notifikasi -->
+    </div><!-- end container -->
+
+    <!-- Toast -->
     <div id="toast" class="hidden fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-xl text-white text-sm font-medium max-w-xs">
-        <i id="toast-icon" class="fas fa-check-circle text-lg"></i>
-        <span id="toast-msg"></span>
+        <i id="toast-icon" class="fas fa-check-circle text-lg"></i><span id="toast-msg"></span>
     </div>
 
     <script>
-        // ── Polling ──────────────────────────────────────────
+        let recordingActive = {1: false, 2: false};
+
         updateAll();
         setInterval(updateAll, 2000);
-        setInterval(updateRecStatus, 1000);
+        setInterval(() => { updateRecStatus(1); updateRecStatus(2); }, 1000);
+        setInterval(refreshRecordingCount, 5000);
+        refreshRecordingCount();
+
+        function switchTab(tab) {
+            document.getElementById('tab-live').classList.toggle('hidden', tab !== 'live');
+            document.getElementById('tab-rekaman').classList.toggle('hidden', tab !== 'rekaman');
+
+            const activeCls   = 'tab-btn px-4 sm:px-6 py-2.5 text-sm font-semibold border-b-2 border-blue-600 text-blue-600 transition whitespace-nowrap';
+            const inactiveCls = 'tab-btn px-4 sm:px-6 py-2.5 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition whitespace-nowrap';
+            document.getElementById('tab-btn-live').className    = tab === 'live'    ? activeCls : inactiveCls;
+            document.getElementById('tab-btn-rekaman').className = tab === 'rekaman' ? activeCls : inactiveCls;
+
+            if (tab === 'rekaman') loadRecordingList();
+        }
 
         function updateAll() {
-            updateCameraStatus();
-            updateLatestDetection();
-            updateTodayStatistics();
-            updateRecentList();
-            updateSnapshots();
+            updateCameraStatus(); updateLatestDetection(); updateTodayStatistics();
+            updateRecentList(); updateSnapshots();
         }
 
         function updateCameraStatus() {
-            fetch('/api/camera_status').then(r => r.json()).then(data => {
-                const el = document.getElementById('camera-status');
-                el.textContent = data.status === 'online' ? 'Terhubung' : 'Terputus';
-                el.className = `text-xs sm:text-lg font-bold truncate mt-0.5 ${data.status === 'online' ? 'text-emerald-600' : 'text-red-600'}`;
-            }).catch(() => {});
+            fetch('/api/camera_status').then(r=>r.json()).then(d => {
+                document.getElementById('camera-status').textContent = d.summary;
+                document.getElementById('cam1-dot').className = `w-2 h-2 rounded-full ml-1 ${d.camera1==='online'?'bg-emerald-400':'bg-gray-300'}`;
+                document.getElementById('cam2-dot').className = `w-2 h-2 rounded-full ml-1 ${d.camera2==='online'?'bg-emerald-400':'bg-gray-300'}`;
+            }).catch(()=>{});
         }
 
         function updateLatestDetection() {
-            fetch('/api/latest_detection').then(r => r.json()).then(data => {
-                document.getElementById('latest-disease').textContent  = data.status;
-                document.getElementById('confidence-level').textContent = data.confidence + '%';
-                document.getElementById('last-update').textContent      = data.timestamp.split(' ')[1];
-            }).catch(() => {});
+            fetch('/api/latest_detection').then(r=>r.json()).then(d => {
+                document.getElementById('latest-disease').textContent = d.status;
+                document.getElementById('confidence-level').textContent = d.confidence + '%';
+                document.getElementById('last-update').textContent = d.timestamp.split(' ')[1] + (d.camera?` (Kam${d.camera})`:'');
+            }).catch(()=>{});
         }
 
         function updateTodayStatistics() {
-            fetch('/api/statistics_today').then(r => r.json()).then(data => {
-                document.getElementById('current-date').textContent  = new Date().toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-                document.getElementById('today-healthy').textContent = data.today.Sehat        || 0;
-                document.getElementById('today-cocci').textContent   = data.today.Coccidiosis  || 0;
-                document.getElementById('today-nd').textContent      = data.today.Newcastle     || 0;
-                document.getElementById('today-salmo').textContent   = data.today.Salmonella    || 0;
-                document.getElementById('today-total').textContent   =
-                    (data.today.Sehat||0)+(data.today.Coccidiosis||0)+(data.today.Newcastle||0)+(data.today.Salmonella||0);
-            }).catch(() => {});
+            fetch('/api/statistics_today').then(r=>r.json()).then(d => {
+                document.getElementById('current-date').textContent = new Date().toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+                document.getElementById('today-healthy').textContent = d.today.Sehat||0;
+                document.getElementById('today-cocci').textContent = d.today.Coccidiosis||0;
+                document.getElementById('today-nd').textContent = d.today.Newcastle||0;
+                document.getElementById('today-salmo').textContent = d.today.Salmonella||0;
+                document.getElementById('today-total').textContent = (d.today.Sehat||0)+(d.today.Coccidiosis||0)+(d.today.Newcastle||0)+(d.today.Salmonella||0);
+            }).catch(()=>{});
         }
 
         function updateRecentList() {
-            fetch('/api/statistics').then(r => r.json()).then(data => {
+            fetch('/api/statistics').then(r=>r.json()).then(d => {
                 const list = document.getElementById('recent-list');
-                if (data.recent && data.recent.length > 0) {
-                    const colors = {
-                        'Sehat':'border-emerald-500 bg-emerald-50',
-                        'Coccidiosis':'border-amber-500 bg-amber-50',
-                        'Newcastle':'border-red-500 bg-red-50',
-                        'Salmonella':'border-pink-500 bg-pink-50'
-                    };
-                    list.innerHTML = data.recent.map(item => `
-                        <div class="flex items-center justify-between p-2 sm:p-3 rounded-lg border-l-4 ${colors[item.disease]||'border-gray-300 bg-gray-50'}">
-                            <span class="font-medium text-gray-900 text-xs sm:text-sm">${item.disease}</span>
+                if (d.recent && d.recent.length) {
+                    const colors = {'Sehat':'border-emerald-500 bg-emerald-50','Coccidiosis':'border-amber-500 bg-amber-50','Newcastle':'border-red-500 bg-red-50','Salmonella':'border-pink-500 bg-pink-50'};
+                    list.innerHTML = d.recent.map(it => `
+                        <div class="flex items-center justify-between p-2 sm:p-3 rounded-lg border-l-4 ${colors[it.disease]||'border-gray-300 bg-gray-50'}">
+                            <span class="font-medium text-gray-900 text-xs sm:text-sm">${it.disease}</span>
                             <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-                                <span class="text-blue-600 font-semibold text-xs sm:text-sm">${item.confidence}%</span>
-                                <span class="text-gray-500 text-xs">${item.timestamp.split(' ')[1]}</span>
+                                <span class="text-blue-600 font-semibold text-xs sm:text-sm">${it.confidence}%</span>
+                                <span class="text-gray-500 text-xs">${it.timestamp.split(' ')[1]}</span>
                             </div>
                         </div>`).join('');
                 }
-            }).catch(() => {});
+            }).catch(()=>{});
         }
+
+        const diseaseColor = {
+            'Sehat':{bg:'bg-emerald-100',text:'text-emerald-800',dot:'bg-emerald-500'},
+            'Coccidiosis':{bg:'bg-amber-100',text:'text-amber-800',dot:'bg-amber-500'},
+            'Newcastle':{bg:'bg-red-100',text:'text-red-800',dot:'bg-red-500'},
+            'Salmonella':{bg:'bg-pink-100',text:'text-pink-800',dot:'bg-pink-500'}
+        };
 
         function updateSnapshots() {
-            fetch('/api/detection_snapshots').then(r => r.json()).then(data => {
-                const container = document.getElementById('snapshots-container');
-                if (data.snapshots && data.snapshots.length > 0) {
-                    container.innerHTML = data.snapshots.map((snap, idx) => `
-                        <div onclick="openModal('${snap.url}')" class="relative group cursor-pointer rounded-lg overflow-hidden aspect-square border-2 border-gray-200 hover:border-blue-500 transition">
-                            <img src="${snap.url}?t=${Date.now()}" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                                <i class="fas fa-search-plus text-white"></i>
-                            </div>
-                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 p-1">
-                                <p class="text-white text-xs font-medium">#${idx+1}</p>
-                            </div>
-                        </div>`).join('');
-                } else {
-                    container.innerHTML = `<div class="col-span-3 lg:col-span-2 text-center py-8">
-                        <i class="fas fa-search text-gray-300 text-2xl mb-2"></i>
-                        <p class="text-gray-400 text-xs">Menunggu deteksi...</p></div>`;
+            fetch('/api/detection_snapshots').then(r=>r.json()).then(d => {
+                const list = document.getElementById('snapshots-list');
+                const counter = document.getElementById('snap-count');
+                if (!d.snapshots || d.snapshots.length===0) {
+                    counter.textContent='0';
+                    list.innerHTML = `<div class="text-center py-10 px-4"><i class="fas fa-satellite-dish text-gray-300 text-2xl mb-2"></i><p class="text-gray-400 text-xs">Menunggu deteksi kamera...</p></div>`;
+                    return;
                 }
-            }).catch(() => {});
-        }
-
-        // ── Recording ─────────────────────────────────────────
-        let recInterval = null;
-
-        function startRecording() {
-            fetch('/api/recording/start', {method:'POST'})
-                .then(r => r.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('btn-start-rec').classList.add('hidden');
-                        document.getElementById('btn-stop-rec').classList.remove('hidden');
-                        document.getElementById('rec-status').classList.remove('hidden');
-                        document.getElementById('rec-status').classList.add('flex');
-                        showToast('Rekaman dimulai!', 'success');
-                    } else {
-                        showToast(data.message, 'error');
+                counter.textContent = d.snapshots.length;
+                list.innerHTML = d.snapshots.map((s, idx) => {
+                    const c = diseaseColor[s.disease] || {bg:'bg-gray-100',text:'text-gray-800',dot:'bg-gray-400'};
+                    const time = s.timestamp ? s.timestamp.split(' ')[1] : '-';
+                    const date = s.timestamp ? s.timestamp.split(' ')[0] : '-';
+                    const isFirst = idx===0;
+                    let label = s.disease;
+                    if (s.counts) {
+                        const det = Object.entries(s.counts).filter(([,v])=>v>0).map(([k,v])=>v>1?`${k}(${v})`:k);
+                        if (det.length>1) label = det.join(', ');
                     }
-                }).catch(() => showToast('Gagal memulai rekaman', 'error'));
+                    return `<div class="flex items-center gap-2 px-3 py-2.5 hover:bg-gray-50 transition ${isFirst?'bg-blue-50/50':''}">
+                        <div class="flex-shrink-0 flex flex-col items-center gap-0.5">
+                            <span class="w-2 h-2 rounded-full ${c.dot} ${isFirst?'animate-pulse':''}"></span>
+                            <span class="text-[10px] text-gray-400 font-medium">#${idx+1}</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-1.5 mb-0.5">
+                                <span class="px-1.5 py-0.5 rounded-full text-[10px] font-semibold ${c.bg} ${c.text} truncate max-w-[90px]">${label}</span>
+                                <span class="text-[10px] text-gray-400 font-medium">K${s.camera||'-'}</span>
+                                ${isFirst?'<span class="text-[10px] text-blue-500 font-medium">Baru</span>':''}
+                            </div>
+                            <div class="flex items-center gap-1.5 text-[11px] text-gray-500">
+                                <span class="font-semibold text-gray-700">${Math.round(s.confidence)}%</span><span>•</span><span>${time}</span><span>•</span><span>${date}</span>
+                            </div>
+                        </div>
+                        <a href="/riwayat?tab=galeri&snapshot=${encodeURIComponent(s.filename)}" class="flex-shrink-0 text-gray-300 hover:text-blue-500"><i class="fas fa-chevron-right text-xs"></i></a>
+                    </div>`;
+                }).join('');
+            }).catch(()=>{});
         }
 
-        function stopRecording() {
-            fetch('/api/recording/stop', {method:'POST'})
-                .then(r => r.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('btn-start-rec').classList.remove('hidden');
-                        document.getElementById('btn-stop-rec').classList.add('hidden');
-                        document.getElementById('rec-status').classList.add('hidden');
-                        document.getElementById('rec-status').classList.remove('flex');
-                        document.getElementById('rec-timer').textContent = '00:00:00';
-
-                        // Tawarkan download langsung
-                        showToastDownload(data.filename, data.download_url);
-                    } else {
-                        showToast(data.message, 'error');
-                    }
-                }).catch(() => showToast('Gagal menghentikan rekaman', 'error'));
+        function toggleRecording(camId) {
+            if (recordingActive[camId]) {
+                stopRecording(camId);
+            } else {
+                startRecording(camId);
+            }
         }
 
-        function updateRecStatus() {
-            fetch('/api/recording/status').then(r => r.json()).then(data => {
-                if (data.is_recording) {
-                    const s = data.elapsed;
-                    const hh = String(Math.floor(s/3600)).padStart(2,'0');
-                    const mm = String(Math.floor((s%3600)/60)).padStart(2,'0');
-                    const ss = String(s%60).padStart(2,'0');
-                    document.getElementById('rec-timer').textContent = `${hh}:${mm}:${ss}`;
+        function startRecording(camId) {
+            fetch(`/api/recording/start/${camId}`, {method:'POST'}).then(r=>r.json()).then(d => {
+                if (d.success) {
+                    recordingActive[camId] = true;
+                    const btn = document.getElementById(`btn-rec${camId}`);
+                    btn.className = 'flex items-center gap-1.5 px-3 py-1.5 bg-gray-700 hover:bg-gray-800 text-white rounded-lg text-xs font-semibold transition flex-shrink-0';
+                    document.getElementById(`btn-rec${camId}-icon`).className = 'fas fa-stop text-[10px]';
+                    document.getElementById(`btn-rec${camId}-text`).textContent = 'Stop Rekam';
+                    document.getElementById(`rec${camId}-status`).innerHTML = '<span class="inline-block w-1.5 h-1.5 bg-red-500 rounded-full rec-pulse mr-1"></span><span class="text-red-600 font-medium">Merekam 00:00</span>';
+                    showToast(`Rekaman Kamera ${camId} dimulai`, 'success');
+                } else { showToast(d.message, 'error'); }
+            }).catch(()=>showToast('Gagal memulai rekaman','error'));
+        }
+
+        function stopRecording(camId) {
+            fetch(`/api/recording/stop/${camId}`, {method:'POST'}).then(r=>r.json()).then(d => {
+                if (d.success) {
+                    recordingActive[camId] = false;
+                    const btn = document.getElementById(`btn-rec${camId}`);
+                    btn.className = 'flex items-center gap-1.5 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs font-semibold transition flex-shrink-0';
+                    document.getElementById(`btn-rec${camId}-icon`).className = 'fas fa-circle text-[10px]';
+                    document.getElementById(`btn-rec${camId}-text`).textContent = 'Mulai Rekam';
+                    document.getElementById(`rec${camId}-status`).innerHTML = '<span class="text-gray-400">Belum merekam</span>';
+                    showToastDownload(d.filename, d.download_url);
+                    refreshRecordingCount();
+                } else { showToast(d.message, 'error'); }
+            }).catch(()=>showToast('Gagal menghentikan rekaman','error'));
+        }
+
+        function updateRecStatus(camId) {
+            if (!recordingActive[camId]) return;
+            fetch(`/api/recording/status/${camId}`).then(r=>r.json()).then(d => {
+                if (d.is_recording) {
+                    const s=d.elapsed, mm=String(Math.floor(s/60)).padStart(2,'0'), ss=String(s%60).padStart(2,'0');
+                    document.getElementById(`rec${camId}-status`).innerHTML = `<span class="inline-block w-1.5 h-1.5 bg-red-500 rounded-full rec-pulse mr-1"></span><span class="text-red-600 font-medium">Merekam ${mm}:${ss}</span>`;
                 }
-            }).catch(() => {});
+            }).catch(()=>{});
         }
 
-        // ── Daftar Rekaman ────────────────────────────────────
-        function openRecordingList() {
-            document.getElementById('recordingModal').classList.remove('hidden');
-            loadRecordingList();
-        }
-
-        function closeRecordingList() {
-            document.getElementById('recordingModal').classList.add('hidden');
+        function refreshRecordingCount() {
+            fetch('/api/recording/list').then(r=>r.json()).then(d => {
+                document.getElementById('rec-count-badge').textContent = (d.recordings || []).length;
+            }).catch(()=>{});
         }
 
         function loadRecordingList() {
-            fetch('/api/recording/list').then(r => r.json()).then(data => {
-                const el = document.getElementById('recording-list-content');
-                if (data.recordings && data.recordings.length > 0) {
-                    el.innerHTML = data.recordings.map(f => `
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
+            const el = document.getElementById('recording-list-content');
+            el.innerHTML = `<div class="col-span-full text-center py-12"><i class="fas fa-spinner fa-spin text-gray-300 text-3xl mb-3"></i><p class="text-gray-400 text-sm">Memuat daftar rekaman...</p></div>`;
+            fetch('/api/recording/list').then(r=>r.json()).then(d => {
+                document.getElementById('rec-count-badge').textContent = (d.recordings || []).length;
+                if (d.recordings && d.recordings.length) {
+                    el.innerHTML = d.recordings.map(f => `
+                        <div class="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200 shadow-sm">
                             <div class="min-w-0 flex-1">
-                                <p class="text-sm font-medium text-gray-900 truncate">
-                                    <i class="fas fa-film text-blue-500 mr-2"></i>${f.filename}
+                                <p class="text-sm font-medium text-gray-900 truncate"><i class="fas fa-film text-blue-500 mr-2"></i>${f.filename}</p>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    <span class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-medium">${f.camera}</span>
+                                    <span class="ml-2">${f.size_mb} MB</span>
                                 </p>
-                                <p class="text-xs text-gray-500 mt-0.5">${f.size_mb} MB</p>
                             </div>
-                            <a href="${f.download_url}" download
-                               class="ml-3 flex-shrink-0 flex items-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-medium transition">
-                                <i class="fas fa-download"></i>
-                                <span>Unduh</span>
-                            </a>
+                            <button onclick="confirmDownload('${f.download_url}','${f.filename}')" 
+                                    class="ml-3 flex-shrink-0 flex items-center gap-1.5 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition">
+                                <i class="fas fa-download"></i><span>Unduh</span>
+                            </button>
                         </div>`).join('');
                 } else {
-                    el.innerHTML = `<div class="text-center py-10">
-                        <i class="fas fa-film text-gray-300 text-4xl mb-3"></i>
-                        <p class="text-gray-400 text-sm">Belum ada rekaman tersimpan</p></div>`;
+                    el.innerHTML = `<div class="col-span-full text-center py-12"><i class="fas fa-film text-gray-300 text-4xl mb-3"></i><p class="text-gray-400 text-sm">Belum ada rekaman tersimpan</p></div>`;
                 }
-            }).catch(() => {
-                document.getElementById('recording-list-content').innerHTML =
-                    '<p class="text-center text-red-400 py-8 text-sm">Gagal memuat daftar rekaman</p>';
+            }).catch(()=>{
+                el.innerHTML = '<div class="col-span-full text-center text-red-400 py-8 text-sm">Gagal memuat daftar rekaman</div>';
             });
         }
 
-        // ── Toast notifikasi ──────────────────────────────────
         function showToast(msg, type='success') {
-            const toast = document.getElementById('toast');
-            const icon  = document.getElementById('toast-icon');
-            const text  = document.getElementById('toast-msg');
-
+            const toast=document.getElementById('toast'), icon=document.getElementById('toast-icon'), text=document.getElementById('toast-msg');
             text.textContent = msg;
-            toast.className  = `fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-xl text-white text-sm font-medium max-w-xs transition`;
-
-            if (type === 'success') {
-                toast.classList.add('bg-emerald-600');
-                icon.className = 'fas fa-check-circle text-lg';
-            } else {
-                toast.classList.add('bg-red-600');
-                icon.className = 'fas fa-exclamation-circle text-lg';
-            }
-
+            toast.className = 'fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-xl text-white text-sm font-medium max-w-xs';
+            toast.classList.add(type==='success'?'bg-emerald-600':'bg-red-600');
+            icon.className = type==='success'?'fas fa-check-circle text-lg':'fas fa-exclamation-circle text-lg';
             toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 4000);
+            setTimeout(()=>toast.classList.add('hidden'), 4000);
         }
 
         function showToastDownload(filename, url) {
-            const toast = document.getElementById('toast');
-            const icon  = document.getElementById('toast-icon');
-            const text  = document.getElementById('toast-msg');
-
-            icon.className   = 'fas fa-check-circle text-lg';
-            text.innerHTML   = `Rekaman selesai! <a href="${url}" download class="underline font-bold ml-1">Unduh sekarang</a>`;
-            toast.className  = 'fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-xl bg-blue-700 text-white text-sm font-medium max-w-xs';
+            const toast=document.getElementById('toast'), icon=document.getElementById('toast-icon'), text=document.getElementById('toast-msg');
+            icon.className='fas fa-check-circle text-lg';
+            text.innerHTML = `Rekaman selesai! <a href="${url}" download class="underline font-bold ml-1">Unduh</a>`;
+            toast.className = 'fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-xl bg-blue-700 text-white text-sm font-medium max-w-xs';
             toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 8000);
+            setTimeout(()=>toast.classList.add('hidden'), 8000);
         }
 
-        // ── Misc ──────────────────────────────────────────────
-        function openModal(url) {
-            document.getElementById('imageModal').classList.remove('hidden');
-            document.getElementById('modal-image').src = url;
+        function toggleFullscreen(id) {
+            const el = document.getElementById(id);
+            if (!document.fullscreenElement) el.requestFullscreen(); else document.exitFullscreen();
         }
-        function closeModal() {
-            document.getElementById('imageModal').classList.add('hidden');
+
+        function showConfirm(title, message, onConfirm) {
+            document.getElementById('confirm-title').textContent   = title;
+            document.getElementById('confirm-message').textContent = message;
+            document.getElementById('confirmModal').classList.remove('hidden');
+            document.getElementById('confirm-ok').onclick = () => {
+                closeConfirm();
+                onConfirm();
+            };
         }
-        function refreshStream() {
-            const img = document.getElementById('video-stream');
-            img.src = img.src.split('?')[0] + '?t=' + Date.now();
+
+        function closeConfirm() {
+            document.getElementById('confirmModal').classList.add('hidden');
         }
-        function toggleFullscreen() {
-            const el = document.getElementById('live-view');
-            if (!document.fullscreenElement) el.requestFullscreen();
-            else document.exitFullscreen();
+
+        function confirmDownload(url, filename) {
+            showConfirm(
+                `Unduh rekaman?`,
+                `File: ${filename}`,
+                () => {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    a.click();
+                }
+            );
         }
 
         document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') {
-                closeModal();
-                closeRecordingList();
-            }
+            if (e.key === 'Escape') closeConfirm();
         });
     </script>
+    <!-- Modal Konfirmasi -->
+<div id="confirmModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
+        <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-question text-blue-600"></i>
+            </div>
+            <h3 id="confirm-title" class="font-bold text-gray-900 text-base"></h3>
+        </div>
+        <p id="confirm-message" class="text-sm text-gray-500 mb-6 ml-13"></p>
+        <div class="flex gap-3 justify-end">
+            <button onclick="closeConfirm()"
+                    class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition">
+                Batal
+            </button>
+            <button id="confirm-ok"
+                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition">
+                Ya, Lanjutkan
+            </button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
