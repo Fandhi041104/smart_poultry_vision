@@ -228,6 +228,22 @@
         loadHistory();
         loadGaleri(1);
 
+        const urlParams    = new URLSearchParams(window.location.search);
+        const tabParam     = urlParams.get('tab');
+        const snapParam    = urlParams.get('snapshot');
+
+        if (tabParam === 'galeri') {
+            switchTab('galeri');
+            if (snapParam) {
+                // Tunggu galeri selesai load lalu buka modal
+                setTimeout(() => {
+                    const url     = `/static/snapshots/${decodeURIComponent(snapParam)}`;
+                    const caption = decodeURIComponent(snapParam).replace('detection_','').replace('.jpg','');
+                    openSnapshotModal(url, caption);
+                }, 1200);
+            }
+        }
+
         // ══ TAB SWITCHING ══════════════════════════════════════
         function switchTab(tab) {
             document.getElementById('tab-riwayat').classList.toggle('hidden', tab !== 'riwayat');
